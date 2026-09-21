@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Kinerja - SKP Tahunan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <!-- NAVBAR -->
+  <nav class="bg-blue-700 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="bg-white text-blue-700 font-bold w-10 h-10 rounded-xl flex items-center justify-center">SKP</div>
+          <div>
+            <h1 class="text-white text-xl font-bold">SKP Tahunan</h1>
+            <p class="text-blue-100 text-sm">Sasaran Kinerja Pegawai</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="kinerja.html" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-50 transition">Kinerja</a>
+          <a href="skp_periodik.html" class="text-white hover:bg-blue-600 px-4 py-2 rounded-lg transition">SKP Periodik</a>
+          <a href="penilaian.html" class="text-white hover:bg-blue-600 px-4 py-2 rounded-lg transition">Penilaian</a>
+          <a href="index.html" class="text-white hover:bg-blue-600 px-4 py-2 rounded-lg transition">🏠 Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800">Data Kinerja</h1>
+        <p class="text-gray-500">Sasaran Kinerja Pegawai</p>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <button onclick="nilaiSemua()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
+          <i class="fas fa-robot"></i> Nilai Semua
+        </button>
+        <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
+          <i class="fas fa-plus"></i> Tambah Kinerja
+        </button>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="bg-white p-4 rounded-xl shadow mb-6 flex flex-wrap items-center gap-4">
+      <label for="filterNip" class="font-medium text-gray-700">Filter NIP:</label>
+      <select id="filterNip" class="border rounded-lg px-3 py-2 bg-white focus:ring focus:ring-blue-200 flex-1 min-w-[200px]">
+        <option value="">Semua</option>
+      </select>
+      <button onclick="applyFilter()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Terapkan</button>
+      <button onclick="resetFilter()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">Reset</button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-2xl shadow overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left border-collapse">
+          <thead class="bg-gray-200 text-gray-700">
+            <tr>
+              <th class="px-4 py-3 border border-gray-300">No</th>
+              <th class="px-4 py-3 border border-gray-300">NIP</th>
+              <th class="px-4 py-3 border border-gray-300">Tipe</th>
+              <th class="px-4 py-3 border border-gray-300">RHK Pimpinan</th>
+              <th class="px-4 py-3 border border-gray-300">Rencana Hasil Kerja</th>
+              <th class="px-4 py-3 border border-gray-300">Aspek</th>
+              <th class="px-4 py-3 border border-gray-300">Indikator</th>
+              <th class="px-4 py-3 border border-gray-300">Target</th>
+              <th class="px-4 py-3 border border-gray-300 text-center">Score</th>
+              <th class="px-4 py-3 border border-gray-300 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalForm" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-gray-800" id="modalTitle">Tambah Kinerja</h2>
+        <button onclick="closeModal()" class="text-gray-500 hover:text-red-500 text-xl">X</button>
+      </div>
+      <form id="kinerjaForm" class="space-y-4">
+        <input type="hidden" id="id">
+        <div>
+          <label class="block mb-1 font-medium">SKP ID</label>
+          <input type="number" id="skp_id" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" required />
+        </div>
+        <div>
+          <label class="block mb-1 font-medium">Tipe</label>
+          <select id="tipe" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200">
+            <option value="Utama">Utama</option>
+            <option value="Tambahan">Tambahan</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-1 font-medium">TUPOKSI</label>
+          <textarea id="tupoksi" rows="3" class="w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" placeholder="Masukkan TUPOKSI untuk penilaian AI..."></textarea>
+          <p class="text-xs text-gray-500 mt-1">TUPOKSI digunakan AI untuk menilai kesesuaian dengan SKP Tahunan</p>
+        </div>
+        <div>
+          <label class="block mb-1 font-medium">RHK Pimpinan</label>
+          <textarea id="rhk_pimpinan" class="w-full border rounded-lg px-4 py-2"></textarea>
+        </div>
+        <div>
+          <label class="block mb-1 font-medium">Rencana Hasil Kerja</label>
+          <textarea id="rencana_hasil_kerja" class="w-full border rounded-lg px-4 py-2" required></textarea>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block mb-1 font-medium">Aspek</label>
+            <input type="text" id="aspek" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+          <div>
+            <label class="block mb-1 font-medium">Indikator</label>
+            <input type="text" id="indikator" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+          <div>
+            <label class="block mb-1 font-medium">Target</label>
+            <input type="text" id="target" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-4">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400">Batal</button>
+          <button type="submit" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '/kinerja';
+    const tableBody = document.getElementById('tableBody');
+    const modal = document.getElementById('modalForm');
+    const form = document.getElementById('kinerjaForm');
+    const filterSelect = document.getElementById('filterNip');
+
+    const groupColors = ['bg-white', 'bg-blue-50'];
+
+    let allData = [];
+
+    // ============================================================
+    // LOAD DATA
+    // ============================================================
+    async function loadData(nip) {
+      try {
+        const url = nip ? `${API_URL}?nip=${encodeURIComponent(nip)}` : API_URL;
+        const res = await fetch(url);
+        const data = await res.json();
+        allData = Array.isArray(data) ? data : (data.data || []);
+        renderTable(allData);
+        if (filterSelect.options.length <= 1) {
+          populateNipDropdown(allData);
+        }
+      } catch (e) {
+        console.error('Gagal load data:', e);
+        tableBody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-red-500">Gagal memuat data: ${e.message}</td></tr>`;
+      }
+    }
+
+    function populateNipDropdown(data) {
+      const nips = [...new Set(data.map(item => item.nip).filter(Boolean))];
+      filterSelect.innerHTML = '<option value="">Semua</option>';
+      nips.forEach(nip => {
+        const opt = document.createElement('option');
+        opt.value = nip;
+        opt.textContent = nip;
+        filterSelect.appendChild(opt);
+      });
+    }
+
+    // ============================================================
+    // RENDER TABEL
+    // ============================================================
+    function renderTable(data) {
+      tableBody.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-gray-500">Tidak ada data</td></tr>`;
+        return;
+      }
+
+      const groups = [];
+      const groupMap = {};
+      data.forEach(item => {
+        const key = item.rencana_hasil_kerja || '-';
+        if (!groupMap[key]) {
+          groupMap[key] = [];
+          groups.push({ key, items: groupMap[key] });
+        }
+        groupMap[key].push(item);
+      });
+
+      let rowNumber = 1;
+
+      groups.forEach((group, groupIndex) => {
+        const colorClass = groupColors[groupIndex % groupColors.length];
+        const items = group.items;
+
+        items.forEach((item, i) => {
+          const isFirst = i === 0;
+          const rowspan = items.length;
+          const topBorder = isFirst ? 'border-t-2 border-t-blue-300' : '';
+
+          // ✅ Score display
+          const scoreDisplay = item.score && item.score !== '0%' ? item.score : '-';
+          const scoreColor = scoreDisplay !== '-' ? 'text-green-700 font-bold' : 'text-gray-400';
+
+          let row = `<tr class="${colorClass} ${topBorder} hover:brightness-95 transition">`;
+
+          if (isFirst) {
+            row += `
+              <td class="px-4 py-3 border border-gray-200 align-middle text-center font-semibold" rowspan="${rowspan}">${rowNumber++}</td>
+              <td class="px-4 py-3 border border-gray-200 align-middle font-mono text-xs" rowspan="${rowspan}">${item.nip || '-'}</td>
+              <td class="px-4 py-3 border border-gray-200 align-middle text-center" rowspan="${rowspan}">
+                <span class="px-2 py-1 rounded bg-blue-100 text-blue-700 text-xs font-semibold">${item.tipe || '-'}</span>
+              </td>
+              <td class="px-4 py-3 border border-gray-200 align-middle" rowspan="${rowspan}">${item.rhk_pimpinan || '-'}</td>
+              <td class="px-4 py-3 border border-gray-200 align-middle font-medium" rowspan="${rowspan}">${item.rencana_hasil_kerja || '-'}</td>
+            `;
+          }
+
+          row += `
+            <td class="px-4 py-3 border border-gray-200">${item.aspek || '-'}</td>
+            <td class="px-4 py-3 border border-gray-200">${item.indikator || '-'}</td>
+            <td class="px-4 py-3 border border-gray-200 text-center font-semibold">${item.target || '-'}</td>
+            <td class="px-4 py-3 border border-gray-200 text-center ${scoreColor}">${scoreDisplay}</td>
+            <td class="px-4 py-3 border border-gray-200 text-center">
+              <div class="flex justify-center gap-2 flex-wrap">
+                <button onclick='editData(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-xs flex items-center gap-1">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+                <button onclick='nilaiData(${item.id})' class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-xs flex items-center gap-1">
+                  <i class="fas fa-robot"></i> Nilai
+                </button>
+                <button onclick='deleteData(${item.id})' class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs flex items-center gap-1">
+                  <i class="fas fa-trash"></i> Hapus
+                </button>
+              </div>
+            </td>
+          `;
+
+          row += '</tr>';
+          tableBody.innerHTML += row;
+        });
+      });
+    }
+
+    // ============================================================
+    // FILTER
+    // ============================================================
+    function applyFilter() {
+      const selectedNip = filterSelect.value;
+      loadData(selectedNip || null);
+    }
+
+    function resetFilter() {
+      filterSelect.value = '';
+      loadData(null);
+    }
+
+    // ============================================================
+    // MODAL CRUD
+    // ============================================================
+    function openModal() {
+      modal.classList.remove('hidden');
+      form.reset();
+      document.getElementById('id').value = '';
+      document.getElementById('modalTitle').innerText = 'Tambah Kinerja';
+      document.getElementById('tupoksi').value = '';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+    }
+
+    function editData(data) {
+      openModal();
+      document.getElementById('modalTitle').innerText = 'Edit Kinerja';
+      document.getElementById('id').value = data.id;
+      document.getElementById('skp_id').value = data.skp_id || '';
+      document.getElementById('tipe').value = data.tipe || 'Utama';
+      document.getElementById('tupoksi').value = data.tupoksi || '';
+      document.getElementById('rhk_pimpinan').value = data.rhk_pimpinan || '';
+      document.getElementById('rencana_hasil_kerja').value = data.rencana_hasil_kerja || '';
+      document.getElementById('aspek').value = data.aspek || '';
+      document.getElementById('indikator').value = data.indikator || '';
+      document.getElementById('target').value = data.target || '';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('id').value;
+      const payload = {
+        skp_id: document.getElementById('skp_id').value,
+        tipe: document.getElementById('tipe').value,
+        tupoksi: document.getElementById('tupoksi').value,
+        rhk_pimpinan: document.getElementById('rhk_pimpinan').value,
+        rencana_hasil_kerja: document.getElementById('rencana_hasil_kerja').value,
+        aspek: document.getElementById('aspek').value,
+        indikator: document.getElementById('indikator').value,
+        target: document.getElementById('target').value
+      };
+
+      let response;
+      if (id) {
+        response = await fetch(`${API_URL}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      const result = await response.json();
+      if (!response.ok) return alert(result.message || 'Terjadi kesalahan');
+      closeModal();
+      const currentFilter = filterSelect.value;
+      loadData(currentFilter || null);
+    });
+
+    async function deleteData(id) {
+      if (!confirm('Yakin ingin menghapus data ini?')) return;
+      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      const currentFilter = filterSelect.value;
+      loadData(currentFilter || null);
+    }
+
+    // ============================================================
+    // ✅ FUNGSI AI - NILAI SATU DATA
+    // ============================================================
+    async function nilaiData(id) {
+      if (!confirm('Proses AI untuk menilai kesesuaian data ini?')) return;
+
+      const btn = event?.target?.closest('button');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Loading...';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/nilai/${id}`, { method: 'POST' });
+        const result = await res.json();
+
+        console.log('Response AI:', result); // ← DEBUG
+
+        if (result.success) {
+          // ✅ Ambil score dari response
+          const score = result.data?.score || result.score || '-';
+          alert(`✅ Penilaian berhasil!\nScore: ${score}`);
+          
+          // ✅ REFRESH TABEL
+          const currentFilter = filterSelect.value;
+          await loadData(currentFilter || null);
+        } else {
+          alert('❌ Gagal: ' + (result.message || 'Unknown error'));
+        }
+      } catch (err) {
+        console.error('Error nilai AI:', err);
+        alert('Error: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-robot"></i> Nilai';
+        }
+      }
+    }
+
+    // ============================================================
+    // ✅ FUNGSI AI - NILAI SEMUA
+    // ============================================================
+    async function nilaiSemua() {
+      if (!confirm('Proses AI untuk semua data yang belum dinilai?')) return;
+
+      const btn = document.querySelector('button[onclick="nilaiSemua()"]');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Memproses...';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/nilai-semua`, { method: 'POST' });
+        const result = await res.json();
+
+        console.log('Response Nilai Semua:', result); // ← DEBUG
+
+        if (result.success) {
+          alert(`✅ ${result.message}`);
+          const currentFilter = filterSelect.value;
+          await loadData(currentFilter || null);
+        } else {
+          alert('❌ Gagal: ' + (result.message || 'Unknown error'));
+        }
+      } catch (err) {
+        console.error('Error nilai semua:', err);
+        alert('Error: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-robot"></i> Nilai Semua';
+        }
+      }
+    }
+
+    // ============================================================
+    // INISIALISASI
+    // ============================================================
+    loadData();
+
+    document.getElementById('modalForm').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
+
+</body>
+
+</html>

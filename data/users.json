@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "nip": "198408252015021001",
+    "password": "$2b$10$RXxXUGALSPFc6prM9BWFvuCrCCSCsRrPZ9zyiD.aZJrO9tSu2qT9C",
+    "role": "user"
+  },
+  {
+    "id": 2,
+    "nip": "admin01",
+    "password": "$2b$10$RK8sJgOJNzMMKB0WlN8UaeaaMJ8.l1FpMZiZCgQUaN2hDeREupHfO",
+    "role": "admin"
+  },
+  {
+    "id": 3,
+    "nip": "dev01",
+    "password": "$2b$10$MXSzbYbzKieoAtZx4Af1A.48TFiJXbQZsz92SnPrGD9v8jUMX/zQO",
+    "role": "developer"
+  },
+  {
+    "id": 4,
+    "nip": "196811221993122001",
+    "password": "$2b$10$1Gye0Z7/iM4zAFxwyjTm3OnyiU9cjW.QCg.p3KH4YzkaYsiqQ.Ula"
+  },
+  {
+    "id": 5,
+    "nip": "197508011999032003",
+    "password": "$2b$10$dzP1Ga5ylN2bIbcWG6W9ueBLYVx1FHJVOP6VTgmJUZjwrQ9LF9/q2"
+  },
+  {
+    "id": 6,
+    "nip": "198309282011011009",
+    "password": "$2b$10$yw1WQ8zrXCg2IjD0lA64/.o8uJVpOXBWiFweHdGQT9oGUPR/61kQu"
+  }
+]

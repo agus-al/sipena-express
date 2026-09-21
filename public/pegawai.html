@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Pegawai - SIPENA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #1a4fa3;
+      --blue-dark: #163d82;
+      --blue-light: #e8f0fd;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --bg: #f1f5f9;
+      --white: #ffffff;
+      --sidebar-w: 220px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--blue);
+      min-height: 100vh;
+      position: fixed;
+      top: 0; left: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      z-index: 100;
+    }
+
+    .sidebar-brand {
+      padding: 24px 20px 20px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .sidebar nav {
+      padding: 16px 0;
+      flex: 1;
+    }
+
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 20px;
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.18s, color 0.18s;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-left-color: var(--accent);
+    }
+
+    .sidebar nav a .icon { font-size: 16px; width: 20px; text-align: center; }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: var(--white);
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .topbar .user-info {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .content {
+      padding: 28px;
+      flex: 1;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 18px 22px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .stat-card:nth-child(2) { animation-delay: 0.08s; }
+    .stat-card:nth-child(3) { animation-delay: 0.16s; }
+
+    .stat-icon {
+      width: 46px; height: 46px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+
+    .stat-icon.blue { background: var(--blue-light); }
+    .stat-icon.green { background: #dcfce7; }
+    .stat-icon.amber { background: #fef3c7; }
+
+    .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--text); }
+
+    /* TABLE CARD */
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+
+    .card-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .card-actions { display: flex; gap: 10px; align-items: center; }
+
+    input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border 0.2s;
+      width: 200px;
+    }
+
+    input[type="text"]:focus { border-color: var(--blue); }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.18s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-danger { background: var(--danger); color: #fff; font-size: 12px; padding: 5px 10px; }
+    .btn-danger:hover { opacity: 0.85; }
+    .btn-edit { background: var(--blue-light); color: var(--blue); font-size: 12px; padding: 5px 10px; }
+    .btn-edit:hover { background: #cfe0fb; }
+    .btn-info { background: #0ea5e9; color: #fff; font-size: 12px; padding: 5px 10px; }
+    .btn-info:hover { opacity: 0.85; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    thead th {
+      background: #f8fafc;
+      padding: 11px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fafc; }
+
+    td {
+      padding: 12px 16px;
+      vertical-align: middle;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .badge-aktif { background: #dcfce7; color: #16a34a; }
+    .badge-nonaktif { background: #fee2e2; color: #dc2626; }
+
+    .td-actions { display: flex; gap: 6px; }
+
+    .empty-row td {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 480px;
+      padding: 28px;
+      transform: translateY(20px);
+      transition: transform 0.25s;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .modal-overlay.active .modal { transform: translateY(0); }
+
+    .modal h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--blue);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-family: inherit;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus { border-color: var(--blue); }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .btn-cancel {
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-cancel:hover { background: var(--border); }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      z-index: 999;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">SIPENA</div>
+  <nav>
+    <a href="index.html"><span class="icon"><i class="fa fa-home"></i></span> Dashboard</a>
+    <a href="pegawai.html" class="active"><span class="icon"><i class="fa fa-users"></i></span> Data Pegawai</a>
+    <a href="struktur.html"><span class="icon"><i class="fa fa-sitemap"></i></span> Struktur Organisasi</a>
+    <a href="tupoksi.html"><span class="icon"><i class="fa fa-clipboard-list"></i></span> Tupoksi</a>
+    <a href="login.html"><span class="icon"><i class="fa fa-sign-out-alt"></i></span> Logout</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <h1>Data Pegawai</h1>
+    <span class="user-info">Selamat datang, Admin</span>
+  </div>
+
+  <div class="content">
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa fa-users"></i></div>
+        <div>
+          <div class="stat-label">Total Pegawai</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="fa fa-check-circle"></i></div>
+        <div>
+          <div class="stat-label">Pegawai Aktif</div>
+          <div class="stat-value" id="statAktif">0</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon amber"><i class="fa fa-pause-circle"></i></div>
+        <div>
+          <div class="stat-label">Non-Aktif</div>
+          <div class="stat-value" id="statNonAktif">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card">
+      <div class="card-header">
+        <h2><i class="fa fa-table" style="color:var(--blue);margin-right:6px;"></i> Daftar Pegawai</h2>
+        <div class="card-actions">
+          <input type="text" id="searchInput" placeholder="Cari nama / NIP..." oninput="renderTable()"/>
+          <button class="btn btn-primary" onclick="openModal()">+ Tambah Pegawai</button>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>NIP</th>
+            <th>Jabatan</th>
+            <th>Unit Kerja</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle"><i class="fa fa-plus-circle"></i> Tambah Pegawai</h3>
+
+    <div class="form-group">
+      <label>Nama Lengkap</label>
+      <input type="text" id="fNama" placeholder="Masukkan nama lengkap"/>
+    </div>
+    <div class="form-group">
+      <label>NIP</label>
+      <input type="text" id="fNip" placeholder="Nomor Induk Pegawai"/>
+    </div>
+    <div class="form-group">
+      <label>Jabatan</label>
+      <input type="text" id="fJabatan" placeholder="Contoh: Camat, Sekretaris..."/>
+    </div>
+    <div class="form-group">
+      <label>Unit Kerja</label>
+      <input type="text" id="fUnit" placeholder="Contoh: Kecamatan Gandusari"/>
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select id="fStatus">
+        <option value="aktif">Aktif</option>
+        <option value="nonaktif">Non-Aktif</option>
+      </select>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-cancel" onclick="closeModal()">Batal</button>
+      <button class="btn btn-primary" onclick="simpanPegawai()"><i class="fa fa-save"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const API = 'http://localhost:3000/pegawai';
+  let pegawaiData = [];
+  let editId = null;
+
+  // LOAD DATA
+  async function loadData() {
+    try {
+      const res = await fetch(API);
+      pegawaiData = await res.json();
+    } catch {
+      // fallback ke localStorage jika API belum aktif
+      pegawaiData = JSON.parse(localStorage.getItem('pegawai') || '[]');
+    }
+    updateStats();
+    renderTable();
+  }
+
+  function updateStats() {
+    document.getElementById('statTotal').textContent = pegawaiData.length;
+    document.getElementById('statAktif').textContent = pegawaiData.filter(p => p.status === 'aktif').length;
+    document.getElementById('statNonAktif').textContent = pegawaiData.filter(p => p.status === 'nonaktif').length;
+  }
+
+  function renderTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = pegawaiData.filter(p =>
+      p.nama.toLowerCase().includes(q) || p.nip.toLowerCase().includes(q)
+    );
+
+    const tbody = document.getElementById('tableBody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="7">Tidak ada data pegawai</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map((p, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${p.nama}</strong></td>
+        <td>${p.nip}</td>
+        <td>${p.jabatan}</td>
+        <td>${p.unit_kerja}</td>
+        <td><span class="badge badge-${p.status}">${p.status === 'aktif' ? 'Aktif' : 'Non-Aktif'}</span></td>
+        <td>
+          <div class="td-actions">
+            <button class="btn btn-info" onclick="location.href='detail_pegawai.html?id=${p.id}\'"><i class="fa fa-eye"></i> Detail</button>
+            <button class="btn btn-edit" onclick="editPegawai('${p.id}')"><i class="fa fa-edit"></i> Edit</button>
+            <button class="btn btn-danger" onclick="hapusPegawai('${p.id}')"><i class="fa fa-trash"></i> Hapus</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // MODAL
+  function openModal(id = null) {
+    editId = id;
+    document.getElementById('modalTitle').innerHTML = id ? '<i class="fa fa-edit"></i> Edit Pegawai' : '<i class="fa fa-plus-circle"></i> Tambah Pegawai';
+
+    if (id) {
+      const p = pegawaiData.find(x => x.id == id);
+      document.getElementById('fNama').value = p.nama;
+      document.getElementById('fNip').value = p.nip;
+      document.getElementById('fJabatan').value = p.jabatan;
+      document.getElementById('fUnit').value = p.unit_kerja;
+      document.getElementById('fStatus').value = p.status;
+    } else {
+      ['fNama','fNip','fJabatan','fUnit'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('fStatus').value = 'aktif';
+    }
+
+    document.getElementById('modalOverlay').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    editId = null;
+  }
+
+  // SIMPAN (Tambah / Edit)
+  async function simpanPegawai() {
+    const data = {
+      nama: document.getElementById('fNama').value.trim(),
+      nip: document.getElementById('fNip').value.trim(),
+      jabatan: document.getElementById('fJabatan').value.trim(),
+      unit_kerja: document.getElementById('fUnit').value.trim(),
+      status: document.getElementById('fStatus').value
+    };
+
+    if (!data.nama || !data.nip) {
+      showToast('Nama dan NIP wajib diisi!', 'error');
+      return;
+    }
+
+    try {
+      if (editId) {
+        await fetch(`${API}/${editId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const idx = pegawaiData.findIndex(p => p.id == editId);
+        pegawaiData[idx] = { ...pegawaiData[idx], ...data };
+        showToast('Data berhasil diupdate!', 'success');
+      } else {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        pegawaiData.push({ id: result.id || Date.now(), ...data });
+        showToast('Pegawai berhasil ditambahkan!', 'success');
+      }
+    } catch {
+      // fallback localStorage
+      if (editId) {
+        const idx = pegawaiData.findIndex(p => p.id == editId);
+        pegawaiData[idx] = { ...pegawaiData[idx], ...data };
+        showToast('Data diupdate (mode offline)!', 'success');
+      } else {
+        pegawaiData.push({ id: Date.now(), ...data });
+        showToast('Ditambahkan (mode offline)!', 'success');
+      }
+      localStorage.setItem('pegawai', JSON.stringify(pegawaiData));
+    }
+
+    closeModal();
+    updateStats();
+    renderTable();
+  }
+
+  // EDIT
+  function editPegawai(id) {
+    openModal(id);
+  }
+
+  // HAPUS
+  async function hapusPegawai(id) {
+    if (!confirm('Yakin ingin menghapus pegawai ini?')) return;
+
+    try {
+      await fetch(`${API}/${id}`, { method: 'DELETE' });
+    } catch {}
+
+    pegawaiData = pegawaiData.filter(p => p.id != id);
+    localStorage.setItem('pegawai', JSON.stringify(pegawaiData));
+    updateStats();
+    renderTable();
+    showToast('Pegawai berhasil dihapus!', 'error');
+  }
+
+  // TOAST
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.className = 'toast', 3000);
+  }
+
+  // Close modal on overlay click
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  loadData();
+</script>
+</body>
+</html>

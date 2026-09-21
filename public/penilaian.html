@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Penilaian Kinerja | Bright Blue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #e6f0ff 0%, #c8e0ff 100%);
+      min-height: 100vh;
+      padding: 40px;
+      color: #0b2b44;
+    }
+    .container {
+      max-width: 1400px;
+      margin: auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .title h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      background: linear-gradient(135deg, #0f4c81, #1c6fb0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .title h1 i {
+      color: #1c6fb0;
+      margin-right: 8px;
+    }
+    .title p {
+      color: #2c5a7a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #bfd9ff;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0, 50, 100, 0.1);
+      transition: all 0.2s;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+    label {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #1a4d73;
+      font-weight: 600;
+    }
+    input,
+    textarea,
+    select {
+      background: #fdfdfd;
+      border: 1px solid #c7dfff;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: #0b2b44;
+      outline: none;
+      transition: 0.2s;
+      font-size: 14px;
+      width: 100%;
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    }
+    input[readonly],
+    textarea[readonly],
+    input[disabled],
+    textarea[disabled],
+    select[disabled] {
+      background: #f1f5f9;
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+    ::placeholder {
+      color: #96b4d4;
+    }
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+    .btn-save {
+      background: linear-gradient(105deg, #1c6fb0, #0f4c81);
+      color: white;
+      box-shadow: 0 4px 10px rgba(28, 111, 176, 0.3);
+    }
+    .btn-save:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(105deg, #2282c0, #125a8c);
+      box-shadow: 0 8px 18px rgba(28, 111, 176, 0.4);
+    }
+    .btn-reset {
+      background: #eef2fa;
+      color: #1a5d8f;
+      border: 1px solid #bfd6f5;
+    }
+    .btn-reset:hover {
+      background: #e2ecfc;
+      transform: translateY(-1px);
+    }
+    .table-card {
+      margin-top: 30px;
+      overflow: hidden;
+    }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .table-header h2 {
+      font-size: 24px;
+      color: #0f4c81;
+      border-left: 5px solid #1c6fb0;
+      padding-left: 18px;
+    }
+    .search-box {
+      position: relative;
+    }
+    .search-box input {
+      padding-left: 45px;
+      width: 280px;
+      border-radius: 40px;
+      border: 1px solid #c7dfff;
+      background: white;
+    }
+    .search-box i {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      transform: translateY(-50%);
+      color: #6c9bd4;
+    }
+    .table-responsive {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+    thead {
+      background: #e6f0ff;
+    }
+    th {
+      padding: 16px;
+      text-align: left;
+      font-size: 14px;
+      color: #1a5d8f;
+      font-weight: 700;
+    }
+    td {
+      padding: 16px;
+      border-top: 1px solid #e2edff;
+      color: #1f3b54;
+      font-size: 14px;
+      vertical-align: top;
+    }
+    tbody tr:hover {
+      background: #f5faff;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-edit {
+      background: #f4a261;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-delete {
+      background: #e76f51;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-edit:hover,
+    .btn-delete:hover {
+      transform: scale(1.03);
+      filter: brightness(0.96);
+    }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+      background: #deedff;
+      color: #0f5a8c;
+      border: 1px solid #add0ff;
+    }
+    .empty {
+      text-align: center;
+      padding: 40px;
+      color: #6c9bd4;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      .title h1 {
+        font-size: 28px;
+      }
+      .search-box input {
+        width: 100%;
+      }
+      .table-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="bg-blue-700 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="bg-white text-blue-700 font-bold w-10 h-10 rounded-xl flex items-center justify-center">SKP</div>
+          <div>
+            <h1 class="text-white text-xl font-bold">SKP Tahunan</h1>
+            <p class="text-blue-100 text-sm">Sasaran Kinerja Pegawai</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="kinerja.html" class="text-white hover:bg-blue-600 px-4 py-2 rounded-lg transition">Kinerja</a>
+          <a href="skp_periodik.html" class="text-white hover:bg-blue-600 px-4 py-2 rounded-lg transition">SKP Periodik</a>
+          <a href="penilaian.html" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-50 transition">Penilaian</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-4 py-6">
+    <div class="header">
+      <div class="title">
+        <h1><i class="fa-solid fa-chart-line"></i> Penilaian Kinerja</h1>
+        <p><i class="fa-regular fa-building"></i> Sistem Monitoring & Evaluasi Kinerja Pegawai</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <form id="formPenilaian">
+        <input type="hidden" id="id">
+        <input type="hidden" id="skp_periodik_id">
+
+        <div class="form-group full" style="margin-bottom:20px;">
+          <label for="skpSelect"><i class="fa-solid fa-list-check"></i> Pilih Data SKP Periodik</label>
+          <select id="skpSelect" onchange="loadSkpData(this.value)">
+            <option value="">-- Pilih SKP Periodik --</option>
+          </select>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>📋 Rencana Hasil Kerja</label>
+            <input type="text" id="rencana_hasil_kerja" readonly placeholder="Pilih SKP Periodik terlebih dahulu">
+          </div>
+
+          <div class="form-group full">
+            <label>⚡ Rencana Aksi</label>
+            <textarea id="rencana_aksi" readonly placeholder="Pilih SKP Periodik terlebih dahulu"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>📎 Bukti Dukung</label>
+            <input type="text" id="bukti_dukung" placeholder="Masukkan link google drive bukti dukung...">
+          </div>
+
+          <div class="form-group">
+            <label>📊 Realisasi</label>
+            <input type="text" id="realisasi" placeholder="Masukkan realisasi...">
+          </div>
+
+          <div class="form-group">
+            <label>⭐ Penilaian</label>
+            <select id="penilaian">
+              <option value="">-- Pilih Penilaian --</option>
+              <option value="Di atas ekspektasi">Di atas ekspektasi</option>
+              <option value="Sesuai ekspektasi">Sesuai ekspektasi</option>
+              <option value="Di bawah ekspektasi">Di bawah ekspektasi</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Simpan Data</button>
+          <button type="reset" class="btn-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- SEKSI FILTER KHUSUS NIP -->
+    <div class="card mt-6 bg-slate-50 border-blue-200 py-4">
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="text-sm font-bold text-blue-900 flex items-center gap-2">
+          <i class="fa-solid fa-user-shield text-blue-600"></i> Kelompokkan Berdasarkan NIP Pegawai:
+        </div>
+        <div class="w-full md:w-80">
+          <select id="filterNip" onchange="applyFilters()" class="w-full bg-white border border-blue-300 rounded-xl p-3">
+            <option value="">-- Tampilkan Semua NIP --</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <div class="table-header">
+        <h2><i class="fa-solid fa-table"></i> Data Penilaian</h2>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Cari data...">
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Pegawai / NIP</th>
+              <th>Rencana Hasil Kerja</th>
+              <th>Rencana Aksi</th>
+              <th>Bukti Dukung</th>
+              <th>Realisasi</th>
+              <th>Penilaian</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // KONFIGURASI
+    // ============================================================
+    const API_BASE = '/penilaian';
+    const SKP_API = '/penilaian/skp_list';
+
+    const form = document.getElementById('formPenilaian');
+    const tableBody = document.getElementById('tableBody');
+    const searchInput = document.getElementById('searchInput');
+    const skpSelect = document.getElementById('skpSelect');
+    const filterNip = document.getElementById('filterNip');
+
+    let allData = [];
+    let allSkpData = [];
+    let currentUser = null;
+
+    const NIP_CAMAT = '196811221993122001';
+    const NIP_SEKCAM = '197508011999032003';
+
+    // ============================================================
+    // CEK SESSION & AKSES
+    // ============================================================
+    async function checkAccessRole() {
+      try {
+        const response = await fetch('/session', { credentials: 'include' });
+        if (!response.ok) return;
+        const result = await response.json();
+        currentUser = result && result.data ? result.data : result;
+        console.log('✅ User session:', currentUser);
+
+        const userNip = currentUser ? String(currentUser.nip) : '';
+        const userRole = currentUser ? String(currentUser.role) : '';
+
+        const inputBukti = document.getElementById('bukti_dukung');
+        const inputRealisasi = document.getElementById('realisasi');
+        const inputPenilaian = document.getElementById('penilaian');
+
+        if (inputBukti) inputBukti.disabled = false;
+        if (inputRealisasi) inputRealisasi.disabled = false;
+
+        if (userNip === NIP_CAMAT || userNip === NIP_SEKCAM || userRole === 'admin' || userRole === 'developer') {
+          if (inputPenilaian) {
+            inputPenilaian.disabled = false;
+            inputPenilaian.options[0].text = "-- Pilih Penilaian --";
+          }
+        } else {
+          if (inputPenilaian) {
+            inputPenilaian.disabled = true;
+            inputPenilaian.value = '';
+            inputPenilaian.options[0].text = "Hanya diisi oleh Atasan/Pimpinan";
+          }
+        }
+      } catch (error) {
+        console.error('Gagal mengambil session user:', error);
+      }
+    }
+
+    // ============================================================
+    // LOAD SKP LIST & REGENERASI DROPDOWN NIP
+    // ============================================================
+    async function loadSkpList() {
+      try {
+        console.log('🔄 [loadSkpList] Mengambil daftar SKP...');
+        const response = await fetch(SKP_API, { credentials: 'include' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const result = await response.json();
+
+        let skpArray = result && result.data ? result.data : result;
+        if (!Array.isArray(skpArray)) {
+          skpArray = Object.values(skpArray).filter(v => typeof v === 'object' && v !== null && v.id);
+        }
+        allSkpData = skpArray;
+        console.log(`✅ Total SKP Induk: ${allSkpData.length}`);
+
+        skpSelect.innerHTML = '<option value="">-- Pilih SKP Periodik --</option>';
+        if (allSkpData.length === 0) {
+          skpSelect.innerHTML += '<option value="" disabled>Tidak ada data SKP</option>';
+          return;
+        }
+
+        allSkpData.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.id;
+          const labelNama = item.nama || item.NAMA || item.nama_pegawai || item.Nama || item.username || '';
+          option.textContent = `${item.rencana_hasil_kerja || 'Tanpa RHK'} (${labelNama || item.nip || ''})`;
+          skpSelect.appendChild(option);
+        });
+
+        // Set list unik untuk pilihan filter NIP
+        populateNipFilter();
+
+      } catch (error) {
+        console.error('❌ Gagal load SKP List:', error);
+        skpSelect.innerHTML = '<option value="">-- Gagal memuat SKP --</option>';
+      }
+    }
+
+    // Mengumpulkan NIP unik & Nama Pegawai untuk Dropdown Filter
+    function populateNipFilter() {
+      const mapNip = new Map();
+
+      allSkpData.forEach(s => {
+        if (s.nip) {
+          const cleanNip = s.nip.trim();
+          const cleanNama = s.nama || s.NAMA || s.nama_pegawai || s.Nama || s.username || 'Pegawai-' + cleanNip;
+          mapNip.set(cleanNip, cleanNama.trim());
+        }
+      });
+
+      filterNip.innerHTML = '<option value="">-- Tampilkan Semua NIP --</option>';
+      mapNip.forEach((nama, nip) => {
+        filterNip.innerHTML += `<option value="${nip}">${nip} - ${nama}</option>`;
+      });
+    }
+
+    // ============================================================
+    // LOAD DATA PENILAIAN
+    // ============================================================
+    async function loadData() {
+      try {
+        console.log('🔄 [loadData] Mengambil data penilaian...');
+        const response = await fetch(API_BASE, { credentials: 'include' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const result = await response.json();
+        let dataArray = result && result.data ? result.data : result;
+        if (!Array.isArray(dataArray)) {
+          if (typeof dataArray === 'object' && dataArray !== null) {
+            dataArray = Object.values(dataArray).filter(v => typeof v === 'object' && v !== null);
+          } else {
+            dataArray = [];
+          }
+        }
+        allData = dataArray.filter(item => typeof item === 'object' && item !== null);
+        
+        applyFilters();
+      } catch (error) {
+        console.error('❌ Gagal load data penilaian:', error);
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty text-red-500">
+              <i class="fa-solid fa-triangle-exclamation text-3xl"></i><br><br>
+              Gagal memuat data: ${error.message}
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    // ============================================================
+    // LOGIKA PENYARINGAN DATA (FILTER NIP + BOX PENCARIAN)
+    // ============================================================
+    function applyFilters() {
+      const valNip = filterNip.value.toLowerCase();
+      const valSearch = searchInput.value.toLowerCase();
+
+      const filteredData = allData.filter(item => {
+        const skp = allSkpData.find(s => String(s.id) === String(item.skp_periodik_id));
+        
+        const nipPegawai = skp && skp.nip ? skp.nip.toLowerCase() : '';
+        const namaPegawai = skp ? (skp.nama || skp.NAMA || skp.nama_pegawai || skp.Nama || skp.username || '').toLowerCase() : '';
+        const rhk = skp && skp.rencana_hasil_kerja ? skp.rencana_hasil_kerja.toLowerCase() : '';
+
+        // 1. Cek Filter Dropdown NIP
+        if (valNip && nipPegawai !== valNip) return false;
+
+        // 2. Cek Global Search Box
+        if (valSearch) {
+          const matchSearch = nipPegawai.includes(valSearch) || 
+                              namaPegawai.includes(valSearch) || 
+                              rhk.includes(valSearch) || 
+                              (item.bukti_dukung || '').toLowerCase().includes(valSearch) ||
+                              (item.realisasi || '').toLowerCase().includes(valSearch);
+          if (!matchSearch) return false;
+        }
+
+        return true;
+      });
+
+      renderTable(filteredData);
+    }
+
+    // ============================================================
+    // RENDER TABEL DATA PENILAIAN
+    // ============================================================
+    function renderTable(data) {
+      tableBody.innerHTML = '';
+
+      if (!Array.isArray(data) || data.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty">
+              <i class="fa-solid fa-folder-open text-2xl"></i><br><br>
+              Tidak ada data penilaian yang cocok
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      let html = '';
+      data.forEach((item, index) => {
+        const skp = allSkpData.find(s => String(s.id) === String(item.skp_periodik_id));
+
+        // Ambil nama dengan toleransi berbagai variasi key dari API
+        let nama = 'Pegawai Terhapus';
+        if (skp) {
+          nama = skp.nama || skp.NAMA || skp.nama_pegawai || skp.Nama || skp.username || 'User-' + (skp.nip || '');
+        }
+        
+        const nip = skp ? (skp.nip || '-') : '-';
+        const jabatan = skp ? (skp.jabatan || skp.JABATAN || skp.nama_jabatan || '') : '';
+        
+        const rhk = skp ? skp.rencana_hasil_kerja : (item.rencana_hasil_kerja || '(SKP tidak ditemukan)');
+        const aksi = skp ? (Array.isArray(skp.rencana_aksi) ? skp.rencana_aksi.join(', ') : skp.rencana_aksi || '') : (item.rencana_aksi || '');
+
+        let buktiDukungHtml = escapeHtml(item.bukti_dukung || '');
+        if (item.bukti_dukung && (item.bukti_dukung.startsWith('http://') || item.bukti_dukung.startsWith('https://'))) {
+          buktiDukungHtml = `
+            <a href="${item.bukti_dukung}" target="_blank" class="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full text-xs transition border border-blue-200">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Drive
+            </a>
+          `;
+        }
+
+        html += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>
+              <div class="font-bold text-blue-900">${escapeHtml(nama)}</div>
+              <div class="text-xs font-mono bg-slate-100 px-1.5 py-0.5 rounded inline-block text-slate-600 mt-1">NIP: ${escapeHtml(nip)}</div>
+              <div class="text-xs text-blue-700 italic mt-0.5">${escapeHtml(jabatan)}</div>
+            </td>
+            <td>${escapeHtml(rhk)}</td>
+            <td>${escapeHtml(aksi)}</td>
+            <td>${buktiDukungHtml}</td>
+            <td>${escapeHtml(item.realisasi || '')}</td>
+            <td><span class="badge">${escapeHtml(item.penilaian || 'Belum Dinilai')}</span></td>
+            <td>
+              <div class="action-buttons">
+                <button type="button" class="btn-edit" onclick="editData('${item.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button type="button" class="btn-delete" onclick="deleteData('${item.id}')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      tableBody.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+    }
+
+    // ============================================================
+    // LOAD DETAIL DATA SKP KE FORM INPUT
+    // ============================================================
+    async function loadSkpData(skpId) {
+      if (!skpId) {
+        form.reset();
+        document.getElementById('id').value = '';
+        document.getElementById('skp_periodik_id').value = '';
+        skpSelect.disabled = false;
+        await checkAccessRole();
+        return;
+      }
+
+      const skp = allSkpData.find(item => String(item.id) === String(skpId));
+      if (!skp) {
+        alert('Data SKP tidak ditemukan di dalam list lokal.');
+        return;
+      }
+
+      document.getElementById('rencana_hasil_kerja').value = skp.rencana_hasil_kerja || '';
+      const aksiText = Array.isArray(skp.rencana_aksi) ? skp.rencana_aksi.join('\n') : (skp.rencana_aksi || '');
+      document.getElementById('rencana_aksi').value = aksiText;
+      document.getElementById('skp_periodik_id').value = skp.id;
+
+      const penilaian = await getPenilaianBySkpId(skp.id);
+      if (penilaian && penilaian.id) {
+        document.getElementById('id').value = penilaian.id;
+        document.getElementById('bukti_dukung').value = penilaian.bukti_dukung || '';
+        document.getElementById('realisasi').value = penilaian.realisasi || '';
+        document.getElementById('penilaian').value = penilaian.penilaian || '';
+        skpSelect.disabled = true;
+      } else {
+        document.getElementById('id').value = '';
+        document.getElementById('bukti_dukung').value = '';
+        document.getElementById('realisasi').value = '';
+        document.getElementById('penilaian').value = '';
+        skpSelect.disabled = false;
+      }
+    }
+
+    async function getPenilaianBySkpId(skpId) {
+      try {
+        const response = await fetch(`${API_BASE}/skp/${skpId}`, { credentials: 'include' });
+        if (!response.ok) return null;
+        const result = await response.json();
+        return result && result.data ? result.data : result;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    // ============================================================
+    // CRUD ACTIONS
+    // ============================================================
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const id = document.getElementById('id').value;
+      const skp_periodik_id = document.getElementById('skp_periodik_id').value;
+      const bukti_dukung = document.getElementById('bukti_dukung').value;
+      const realisasi = document.getElementById('realisasi').value;
+      const penilaian = document.getElementById('penilaian').value;
+
+      if (!skp_periodik_id) {
+        alert('Silakan pilih SKP Periodik terlebih dahulu.');
+        return;
+      }
+
+      const payload = { skp_periodik_id, bukti_dukung, realisasi, penilaian };
+
+      try {
+        let response;
+        if (id === '') {
+          response = await fetch(API_BASE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(payload)
+          });
+        } else {
+          response = await fetch(`${API_BASE}/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(payload)
+          });
+        }
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Gagal menyimpan');
+        }
+
+        form.reset();
+        document.getElementById('id').value = '';
+        document.getElementById('skp_periodik_id').value = '';
+        document.getElementById('rencana_hasil_kerja').value = '';
+        document.getElementById('rencana_aksi').value = '';
+        skpSelect.value = '';
+        skpSelect.disabled = false;
+
+        await checkAccessRole();
+        await loadData();
+        alert('Data berhasil disimpan!');
+      } catch (error) {
+        alert('Gagal menyimpan: ' + error.message);
+      }
+    });
+
+    async function editData(id) {
+      try {
+        const response = await fetch(`${API_BASE}/${id}`, { credentials: 'include' });
+        if (!response.ok) throw new Error('Data tidak ditemukan');
+        const result = await response.json();
+        const data = result && result.data ? result.data : result;
+
+        document.getElementById('id').value = data.id;
+        const skpId = data.skp_periodik_id;
+
+        await loadSkpData(skpId);
+
+        document.getElementById('bukti_dukung').value = data.bukti_dukung || '';
+        document.getElementById('realisasi').value = data.realisasi || '';
+        document.getElementById('penilaian').value = data.penilaian || '';
+
+        skpSelect.value = skpId;
+        skpSelect.disabled = true;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (error) {
+        alert('Gagal mengambil data untuk diedit: ' + error.message);
+      }
+    }
+
+    async function deleteData(id) {
+      if (!confirm('Yakin ingin menghapus data?')) return;
+      try {
+        const response = await fetch(`${API_BASE}/${id}`, { method: 'DELETE', credentials: 'include' });
+        if (!response.ok) throw new Error('Gagal menghapus');
+        await loadData();
+        alert('Data berhasil dihapus');
+      } catch (error) {
+        alert('Gagal menghapus: ' + error.message);
+      }
+    }
+
+    // Event input pencarian
+    searchInput.addEventListener('keyup', applyFilters);
+
+    // Reset Form & Clear Filter
+    document.querySelector('.btn-reset').addEventListener('click', async function (e) {
+      e.preventDefault();
+      form.reset();
+      document.getElementById('id').value = '';
+      document.getElementById('skp_periodik_id').value = '';
+      document.getElementById('rencana_hasil_kerja').value = '';
+      document.getElementById('rencana_aksi').value = '';
+      skpSelect.value = '';
+      skpSelect.disabled = false;
+      
+      filterNip.value = '';
+      searchInput.value = '';
+      
+      await checkAccessRole();
+      applyFilters();
+    });
+
+    // ============================================================
+    // INIT RUN
+    // ============================================================
+    async function init() {
+      console.log('🚀 [init] Memulai inisialisasi...');
+      await checkAccessRole();
+      await loadSkpList();
+      await loadData();
+      console.log('✅ [init] Inisialisasi selesai');
+    }
+    init();
+
+    window.loadSkpData = loadSkpData;
+    window.editData = editData;
+    window.deleteData = deleteData;
+    window.applyFilters = applyFilters;
+  </script>
+</body>
+
+</html>

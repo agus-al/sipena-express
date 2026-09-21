@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi TUPOKSI - Kec. Gandusari</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('PegawaiKec.Gandusari.jpg');
+            background-size: cover; background-position: center; height: 500px;
+        }
+        .custom-card { border: none; border-radius: 1.5rem; }
+        .badge-group { background: #ffffff; border-left: 4px solid #16a34a; margin-bottom: 0.5rem; padding: 12px; border-radius: 0 10px 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .badge-group ol { padding-left: 1.2rem; margin-bottom: 0; }
+        .badge-group ol li { font-size: 0.875rem; color: #334155; margin-bottom: 2px; }
+        .sipena-header {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white; border-radius: 0 0 24px 24px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: sticky; top: 0; z-index: 999;
+        }
+        .sipena-header h3 { font-size: 30px; letter-spacing: 1px; color: #ffffff; }
+        .sipena-header small { color: rgba(255,255,255,0.8); font-size: 14px; }
+        .menu-link {
+            text-decoration: none; color: white; padding: 2px 6px;
+            border-radius: 14px; font-weight: 500; transition: all 0.3s ease;
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(6px);
+        }
+        .menu-link:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); color: #fff; }
+        .menu-link i { margin-right: 8px; color: #93c5fd; }
+        .logout-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626); color: white;
+            border: none; padding: 10px 22px; border-radius: 14px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .logout-btn:hover { transform: translateY(-2px) scale(1.03); }
+        #toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; min-width: 220px; display: none; }
+        .tipe-block { background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+        .tipe-block .tipe-header { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; }
+        .poin-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .poin-row input { flex: 1; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 0.4rem 0.75rem; font-size: 0.875rem; background: #f8fafc; }
+        .poin-row input:focus { outline: none; border-color: #16a34a; background: #fff; }
+        .btn-hapus-poin { background: none; border: none; color: #ef4444; cursor: pointer; padding: 2px 6px; font-size: 0.85rem; }
+        .btn-hapus-tipe { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.85rem; margin-left: auto; }
+        .btn-tambah-poin { background: none; border: none; color: #16a34a; font-size: 0.8rem; font-weight: 600; cursor: pointer; padding: 0; }
+        .btn-tambah-poin:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- Loading -->
+    <div id="loading" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.6); z-index:9998; align-items:center; justify-content:center;">
+        <div class="spinner-border text-success" role="status"></div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast align-items-center text-white border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body fw-bold" id="toastMsg"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideToast()"></button>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="sipena-header py-3 px-4 d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <h3 class="fw-bold mb-0">SIPENA</h3>
+            <small>Sistem Informasi Peniaian Pegawai</small>
+        </div>
+        <nav class="d-flex align-items-center gap-2 flex-wrap mt-3 mt-lg-0">
+            <a href="kinerja.html" class="menu-link"><i class="fa-solid fa-gear"></i>📋 Kinerja</a>
+            <a href="tupoksi.html" class="menu-link"><i class="fa-solid fa-gear"></i> Tupoksi</a>
+            <a href="struktur.html" class="menu-link"><i class="fa-solid fa-building"></i> Struktur Organisasi</a>
+            <a href="Index.html" class="menu-link"><i class="fa-solid fa-right-from-bracket"></i> Home</a>
+            <a href="/auth/logout"><button class="logout-btn">Logout</button></a>
+        </nav>
+    </header>
+
+    <nav class="navbar shadow-sm py-3" style="background: #15803d;">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white fw-bold gap-2" href="#">
+                <img src="LogoKec.Gandusari.jpeg" class="rounded-full object-cover" width="45" height="45">
+                KECAMATAN GANDUSARI
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero-section d-flex align-items-center text-white">
+        <div class="container text-center">
+            <h1 class="text-5xl font-extrabold mb-2" style="text-shadow: 2px 4px 10px rgba(0,0,0,0.5);">Sistem Informasi Penilaian Pegawai</h1>
+            <p class="text-xl opacity-90">Pengelolaan Tugas Pokok & Fungsi Pegawai Terintegrasi</p>
+        </div>
+    </section>
+
+    <div class="container py-10">
+        <div class="row align-items-center mb-8">
+            <div class="col-md-7">
+                <h2 class="text-3xl font-bold text-slate-800">Daftar Jabatan & Tupoksi</h2>
+                <p class="text-slate-500">Klik tombol di samping untuk menambah atau mengubah data.</p>
+            </div>
+            <div class="col-md-5 text-md-end">
+                <button class="btn btn-success btn-lg rounded-pill px-5 shadow-lg border-0 fw-bold"
+                        style="background-color: #16a34a !important;"
+                        data-bs-toggle="modal" data-bs-target="#modalTambah">
+                    <i class="fa-solid fa-circle-plus me-2"></i> TAMBAH JABATAN BARU
+                </button>
+            </div>
+        </div>
+
+        <div class="card custom-card shadow-sm overflow-hidden bg-white">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-slate-50">
+                        <tr class="text-slate-600 text-xs uppercase tracking-widest">
+                            <th class="px-6 py-4">Nama Jabatan</th>
+                            <th class="px-6 py-4">Tupoksi</th>
+                            <th class="px-6 py-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr><td colspan="3" class="text-center py-5 text-slate-400">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal TAMBAH -->
+    <div class="modal fade" id="modalTambah" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-2xl overflow-hidden" style="border-radius:2rem;">
+                <div class="bg-green-700 p-6 text-white text-center">
+                    <h3 class="text-xl font-bold">Input Data Baru</h3>
+                </div>
+                <div class="modal-body p-8 bg-slate-50" style="max-height:70vh; overflow-y:auto;">
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">NAMA JABATAN</label>
+                        <input type="text" id="inputJabatan" class="form-control rounded-xl border-0 shadow-sm p-3" placeholder="Masukkan Nama Jabatan...">
+                    </div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">RINCIAN TUPOKSI</label>
+                    <div id="containerTupoksi"></div>
+                    <button type="button" onclick="tambahTipe('containerTupoksi')" class="text-green-600 font-bold text-sm mt-2">
+                        <i class="fa-solid fa-plus-circle"></i> Tambah Tipe Tupoksi
+                    </button>
+                </div>
+                <div class="modal-footer p-6 bg-slate-50 border-0 justify-content-center gap-3">
+                    <button class="btn btn-light px-5 rounded-pill" data-bs-dismiss="modal">Batal</button>
+                    <button onclick="simpanData()" class="btn btn-success px-5 rounded-pill shadow-lg fw-bold">
+                        <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal EDIT -->
+    <div class="modal fade" id="modalEdit" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-2xl overflow-hidden" style="border-radius:2rem;">
+                <div class="p-6 text-white text-center" style="background:#1d4ed8;">
+                    <h3 class="text-xl font-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Edit Data Tupoksi</h3>
+                </div>
+                <div class="modal-body p-8 bg-slate-50" style="max-height:70vh; overflow-y:auto;">
+                    <input type="hidden" id="editId">
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">NAMA JABATAN</label>
+                        <input type="text" id="editJabatan" class="form-control rounded-xl border-0 shadow-sm p-3" placeholder="Masukkan Nama Jabatan...">
+                    </div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">RINCIAN TUPOKSI</label>
+                    <div id="containerEditTupoksi"></div>
+                    <button type="button" onclick="tambahTipe('containerEditTupoksi')" class="text-blue-600 font-bold text-sm mt-2">
+                        <i class="fa-solid fa-plus-circle"></i> Tambah Tipe Tupoksi
+                    </button>
+                </div>
+                <div class="modal-footer p-6 bg-slate-50 border-0 justify-content-center gap-3">
+                    <button class="btn btn-light px-5 rounded-pill" data-bs-dismiss="modal">Batal</button>
+                    <button onclick="updateData()" class="btn px-5 rounded-pill shadow-lg fw-bold text-white" style="background:#1d4ed8;">
+                        <i class="fa-solid fa-pen-to-square me-2"></i>Update Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API = '/tupoksi';
+        const TIPE_OPTIONS = ['Ringkasan Tugas Jabatan', 'Rincian Tugas Jabatan', 'Wewenang', 'Tanggung Jawab', 'Hasil Kerja', 'Peraturan Bupati', 'Anggaran (DPA)'];
+
+        function showToast(pesan, tipe = 'success') {
+            const toast = document.getElementById('toast');
+            toast.className = `toast align-items-center text-white border-0 bg-${tipe === 'success' ? 'success' : 'danger'}`;
+            document.getElementById('toastMsg').textContent = pesan;
+            toast.style.display = 'block';
+            setTimeout(hideToast, 3000);
+        }
+        function hideToast() { document.getElementById('toast').style.display = 'none'; }
+        function setLoading(state) {
+            document.getElementById('loading').style.display = state ? 'flex' : 'none';
+        }
+
+        // ✅ HELPER: Parse JSON string (dari MySQL) jadi object/array
+        function parseJSONField(val) {
+            if (typeof val === 'string') {
+                try { return JSON.parse(val); } catch(e) { return val; }
+            }
+            return val;
+        }
+
+        // =============================================
+        // BUAT SATU BARIS POIN (input text + tombol hapus)
+        // =============================================
+        function buatPoinRow(nilai = '') {
+            const div = document.createElement('div');
+            div.className = 'poin-row';
+            div.innerHTML = `
+                <span class="text-slate-400 text-sm">•</span>
+                <input type="text" class="poin-input" placeholder="Tulis rincian tugas..." value="${nilai}">
+                <button type="button" class="btn-hapus-poin" onclick="this.parentElement.remove()" title="Hapus poin">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
+            return div;
+        }
+
+        // =============================================
+        // BUAT SATU BLOK TIPE (select tipe + banyak poin)
+        // =============================================
+        function buatTipeBlock(tipe = 'Ringkasan Tugas Jabatan', poinList = []) {
+            const opts = TIPE_OPTIONS.map(o => `<option ${o === tipe ? 'selected' : ''}>${o}</option>`).join('');
+
+            const block = document.createElement('div');
+            block.className = 'tipe-block';
+            block.innerHTML = `
+                <div class="tipe-header">
+                    <i class="fa-solid fa-layer-group text-green-600 text-sm"></i>
+                    <select class="form-select form-select-sm border-0 bg-slate-100 rounded-lg tipe-select" style="max-width:200px;">${opts}</select>
+                    <button type="button" class="btn-hapus-tipe" onclick="this.closest('.tipe-block').remove()" title="Hapus tipe ini">
+                        <i class="fa-solid fa-trash"></i> Hapus Tipe
+                    </button>
+                </div>
+                <div class="poin-container"></div>
+                <button type="button" class="btn-tambah-poin mt-1" onclick="tambahPoin(this)">
+                    <i class="fa-solid fa-plus"></i> Tambah Poin
+                </button>
+            `;
+
+            const poinContainer = block.querySelector('.poin-container');
+
+            // Normalisasi poinList jadi array
+            if (!Array.isArray(poinList)) poinList = poinList ? [poinList] : [];
+
+            if (poinList.length > 0) {
+                poinList.forEach(p => poinContainer.appendChild(buatPoinRow(p)));
+            } else {
+                poinContainer.appendChild(buatPoinRow());
+            }
+
+            return block;
+        }
+
+        function tambahTipe(containerId) {
+            const container = document.getElementById(containerId);
+            container.appendChild(buatTipeBlock());
+        }
+
+        function tambahPoin(btn) {
+            const poinContainer = btn.previousElementSibling;
+            poinContainer.appendChild(buatPoinRow());
+        }
+
+        function getTugas(containerId) {
+            const tugas = [];
+            document.querySelectorAll(`#${containerId} .tipe-block`).forEach(block => {
+                const tipe = block.querySelector('.tipe-select').value;
+                const isi = [];
+                block.querySelectorAll('.poin-input').forEach(input => {
+                    const val = input.value.trim();
+                    if (val) isi.push(val);
+                });
+                if (isi.length > 0) tugas.push({ tipe, isi });
+            });
+            return tugas;
+        }
+
+        // =============================================
+        // RENDER TABEL (✅ DIPERBAIKI: Parse JSON dari MySQL)
+        // =============================================
+        function render(data) {
+            const tb = document.getElementById('tableBody');
+            if (!data || !data.length) {
+                tb.innerHTML = '<tr><td colspan="3" class="text-center py-5 text-slate-400">Belum ada data jabatan.</td></tr>';
+                return;
+            }
+            
+            tb.innerHTML = data.map(item => {
+                // ✅ Parse tugas kalo masih string JSON
+                let tugasArr = parseJSONField(item.tugas);
+                if (!Array.isArray(tugasArr)) tugasArr = [];
+                
+                return `
+                    <tr>
+                        <td class="px-6 py-4 font-bold text-slate-800 text-lg w-1/3">${item.jabatan}</td>
+                        <td class="px-6 py-4">${tugasArr.map(t => {
+                            // ✅ Parse isi kalo masih string JSON
+                            let isiArr = parseJSONField(t.isi);
+                            if (!Array.isArray(isiArr)) isiArr = isiArr ? [isiArr] : [];
+                            
+                            return `
+                            <div class="badge-group">
+                                <span class="text-[10px] font-bold text-green-700 bg-green-50 px-2 rounded uppercase">${t.tipe}</span>
+                                <ol class="mt-1">
+                                    ${isiArr.map(p => `<li>${p}</li>`).join('')}
+                                </ol>
+                            </div>`;
+                        }).join('')}
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <button onclick="bukaEdit(${item.id})" class="btn btn-outline-primary btn-sm rounded-circle p-2 me-1" title="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="hapusJabatan(${item.id})" class="btn btn-outline-danger btn-sm rounded-circle p-2" title="Hapus">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // =============================================
+        // LOAD DATA
+        // =============================================
+        async function loadData() {
+            setLoading(true);
+            try {
+                const res = await fetch(API);
+                if (!res.ok) throw new Error('Status ' + res.status);
+                const data = await res.json();
+                console.log('Data tupoksi:', data);
+                render(data);
+            } catch (e) {
+                console.error('Gagal load:', e);
+                document.getElementById('tableBody').innerHTML =
+                    '<tr><td colspan="3" class="text-center py-5 text-danger">Gagal memuat data: ' + e.message + '</td></tr>';
+            } finally { setLoading(false); }
+        }
+
+        // =============================================
+        // SIMPAN DATA BARU
+        // =============================================
+        async function simpanData() {
+            const jabatan = document.getElementById('inputJabatan').value.trim();
+            if (!jabatan) return alert('Isi nama jabatan!');
+            const tugas = getTugas('containerTupoksi');
+            if (!tugas.length) return alert('Minimal isi satu tipe tupoksi dengan poin!');
+
+            setLoading(true);
+            try {
+                const res = await fetch(API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jabatan, tugas })
+                });
+                if (!res.ok) { const e = await res.json(); throw new Error(e.error); }
+                bootstrap.Modal.getInstance(document.getElementById('modalTambah')).hide();
+                resetFormTambah();
+                await loadData();
+                showToast('Data berhasil disimpan!');
+            } catch (e) { showToast(e.message, 'danger'); }
+            finally { setLoading(false); }
+        }
+
+        // =============================================
+        // BUKA MODAL EDIT (✅ DIPERBAIKI)
+        // =============================================
+        async function bukaEdit(id) {
+            setLoading(true);
+            try {
+                const res = await fetch(API);
+                const data = await res.json();
+                const item = data.find(d => String(d.id) === String(id));
+                if (!item) throw new Error('Data tidak ditemukan');
+
+                document.getElementById('editId').value = item.id;
+                document.getElementById('editJabatan').value = item.jabatan;
+
+                const container = document.getElementById('containerEditTupoksi');
+                container.innerHTML = '';
+
+                // ✅ Parse tugas dari MySQL
+                let tugasArr = parseJSONField(item.tugas);
+                if (!Array.isArray(tugasArr)) tugasArr = [];
+
+                tugasArr.forEach(t => {
+                    // ✅ Parse isi dari MySQL
+                    let isiArr = parseJSONField(t.isi);
+                    if (!Array.isArray(isiArr)) isiArr = isiArr ? [isiArr] : [];
+                    container.appendChild(buatTipeBlock(t.tipe, isiArr));
+                });
+
+                new bootstrap.Modal(document.getElementById('modalEdit')).show();
+            } catch (e) { showToast(e.message, 'danger'); }
+            finally { setLoading(false); }
+        }
+
+        // =============================================
+        // UPDATE DATA
+        // =============================================
+        async function updateData() {
+            const id = document.getElementById('editId').value;
+            const jabatan = document.getElementById('editJabatan').value.trim();
+            if (!jabatan) return alert('Isi nama jabatan!');
+            const tugas = getTugas('containerEditTupoksi');
+            if (!tugas.length) return alert('Minimal isi satu tipe tupoksi dengan poin!');
+
+            setLoading(true);
+            try {
+                const res = await fetch(`${API}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jabatan, tugas })
+                });
+                if (!res.ok) { const e = await res.json(); throw new Error(e.error); }
+                bootstrap.Modal.getInstance(document.getElementById('modalEdit')).hide();
+                await loadData();
+                showToast('Data berhasil diupdate!');
+            } catch (e) { showToast(e.message, 'danger'); }
+            finally { setLoading(false); }
+        }
+
+        // =============================================
+        // HAPUS DATA
+        // =============================================
+        async function hapusJabatan(id) {
+            if (!confirm('Yakin hapus data ini?')) return;
+            setLoading(true);
+            try {
+                const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Gagal hapus');
+                await loadData();
+                showToast('Data berhasil dihapus!');
+            } catch (e) { showToast(e.message, 'danger'); }
+            finally { setLoading(false); }
+        }
+
+        // =============================================
+        // RESET FORM TAMBAH
+        // =============================================
+        function resetFormTambah() {
+            document.getElementById('inputJabatan').value = '';
+            const container = document.getElementById('containerTupoksi');
+            container.innerHTML = '';
+            container.appendChild(buatTipeBlock());
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('containerTupoksi').appendChild(buatTipeBlock());
+            loadData();
+        });
+    </script>
+</body>
+</html>

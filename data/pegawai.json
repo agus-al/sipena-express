@@ -1,0 +1,150 @@
+[
+  {
+    "id": 1779075362602,
+    "nama": "Dra. Yuliatiningsih",
+    "nip": "196811221993122001",
+    "jabatan": "Camat",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779077900958,
+    "nama": "Lina Handayani, ST.",
+    "nip": "197508011999032003",
+    "jabatan": "Sekretaris Kecamatan",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif",
+    "sk": [],
+    "riwayat_jabatan": [],
+    "tempat_lahir": "Blitar",
+    "tanggal_lahir": "1975-08-01",
+    "jenis_kelamin": "Perempuan",
+    "agama": "Islam",
+    "pendidikan": "S1",
+    "no_hp": "08125530813",
+    "alamat": "Jl. Manggis  RT.3 RW.2 No. 51 Kel. Tangkil Kec. Winngi",
+    "golongan": "III/d",
+    "tmt_jabatan": "2023-11-20",
+    "masa_kerja": "16 Tahun 10 Bulan"
+  },
+  {
+    "id": 1779078300932,
+    "nama": "Bambang Pakuansyah, SP. MM.",
+    "nip": "Bambang Pakuansyah, SP. MM.",
+    "jabatan": "Kepala Seksi Pemerintahan",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779078490410,
+    "nama": "Maulana, ST.",
+    "nip": "197603122005011009",
+    "jabatan": "Kepala Seksi Ketenteraman dan Ketertiban",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779078619774,
+    "nama": "Hasan Alfa Roby, ST.",
+    "nip": "198309282011011009",
+    "jabatan": "Kepala Sub Bagian Penyusunan Program dan Keuangan",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif",
+    "sk": [],
+    "riwayat_jabatan": [],
+    "tempat_lahir": "Gresik",
+    "tanggal_lahir": "1983-09-28",
+    "jenis_kelamin": "Laki-laki",
+    "agama": "Islam",
+    "pendidikan": "S1",
+    "no_hp": "082131803232",
+    "alamat": "Perum Griya Jati Permai Blok AA no. 4 RT. 03 Rw.015 Kel. Sukorejo Kota Blitar",
+    "golongan": "III/d",
+    "tmt_jabatan": "2022-12-30",
+    "masa_kerja": "15 tahun 6 bulan"
+  },
+  {
+    "id": 1779078764307,
+    "nama": "Bambang Yunianto, S.ST.",
+    "nip": "197606112003121013",
+    "jabatan": "Kepala Seksi Kesejahteraan Sosial",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779078837836,
+    "nama": "Suherianto, SE.",
+    "nip": "197003072009061003",
+    "jabatan": "Kepala Seksi Pemberdayaan Masyarkat",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779078898520,
+    "nama": "Agus Alvianto, S.Pt.",
+    "nip": "198408252015021001",
+    "jabatan": "Kepala Sub Bagian Umum dan Kepegawaian",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif",
+    "sk": [],
+    "riwayat_jabatan": [],
+    "tempat_lahir": "Blitar",
+    "tanggal_lahir": "1984-08-25",
+    "jenis_kelamin": "Laki-laki",
+    "agama": "Islam",
+    "pendidikan": "S1",
+    "no_hp": "082140564333",
+    "alamat": "Lingk. Ngebrak RT/RW 3/3 Kel. Tawangsari Kec. Garum",
+    "golongan": "III/c",
+    "tmt_jabatan": "2022-12-30",
+    "masa_kerja": "11 Tahun 5 Bulan"
+  },
+  {
+    "id": 1779078971815,
+    "nama": "Eko Darmawan, S.Sos.",
+    "nip": "197702182010011008",
+    "jabatan": "Penelaah Teknis Kebijakan",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779079041255,
+    "nama": "Heru Suseno",
+    "nip": "196903112009061002",
+    "jabatan": "Pengadministrasi Perkantoran",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779079097485,
+    "nama": "Andri Kurniawan",
+    "nip": "1986132025211018",
+    "jabatan": "Operator Layanan Operasional",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779079171150,
+    "nama": "Sintia Kusuma Dewi, S.Pt.",
+    "nip": "198505032025212011",
+    "jabatan": "Pengadministrasi Perkantoran",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779079233242,
+    "nama": "Prayitno",
+    "nip": "198004222025211056",
+    "jabatan": "Operator Layanan Operasional",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  },
+  {
+    "id": 1779079299937,
+    "nama": "Putri Argita",
+    "nip": "200108152025212017",
+    "jabatan": "Operator Layanan Operasional",
+    "unit_kerja": "Kecamatan Gandusari",
+    "status": "aktif"
+  }
+]

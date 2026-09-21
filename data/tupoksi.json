@@ -1,0 +1,399 @@
+[
+  {
+    "jabatan": "Camat",
+    "tugas": [
+      {
+        "tipe": "Ringkasan Tugas Jabatan",
+        "isi": [
+          "Melaksanakan tugas yang dilimpahkan oleh Bupati untuk melaksanakan sebagian urusan pemerintahan yang menjadi kewenangan daerah Kabupaten."
+        ]
+      },
+      {
+        "tipe": "Rincian Tugas Jabatan",
+        "isi": [
+          "1. Mengkoordinasikan kegiatan pemberdayaan masyarakat;",
+          "2. Mengkoordinasikan  penerapan dan penegakan Perda dan Peraturan Bupati;",
+          "3. Mengkoordinasikan pemeliharaan prasarana dan sarana pelayanan umum;",
+          "4. Mengkoordinasikan penyelenggaraan kegiatan pemerintahan yang dilakukan oleh Perangkat Daerah di tingkat kecamatan;",
+          "5. Melaksanakan urusan pemerintahan yang menjadi kewenangan kabupaten yang tidak dilaksanakan oleh unit kerja pemerintahan daerah yang ada di kecamatan;",
+          "6. Menyelenggarakan urusan pemerintahan umum di Kecamatan;",
+          "7. Mengkoordinasikan upaya penyelenggaraan ketenteraman dan ketertiban umum;",
+          "8. Membina dan mengawasi penyelenggaraan kegiatan desa atau sebutan lain dan/atau kelurahan"
+        ]
+      },
+      {
+        "tipe": "Wewenang",
+        "isi": [
+          "1. Mengendalikan pelaksanaan kegiatan;",
+          "2. Menandatangani laporan dan berkas surat-surat;",
+          "3. Meneliti dan menyempurnakan hasil kerja bawahan;",
+          "4. Memberi masukan dan pertimbangan kepada atasan;",
+          "5. Menilai kinerja dan prestasi bawahan dalam melaksanakan tugas;",
+          "6. Memberi teguran dan sanksi kepada bawahan."
+        ]
+      },
+      {
+        "tipe": "Tanggung Jawab",
+        "isi": [
+          "1. Terlaksananya tugas dan fungsi;",
+          "2. Penyelesaian tugas tepat waktu;",
+          "3. Tersusunnya laporan pertanggungjawaban kegiatan;",
+          "4. Disiplin dan kualitas kinerja bawahan;",
+          "5. Distribusi tugas kepada bawahan;"
+        ]
+      },
+      {
+        "tipe": "Hasil Kerja",
+        "isi": [
+          "1. Kegiatan urusan pemerintahan umum di Kecamatan;",
+          "2. Kegiatan koordinasi kegiatan pemberdayaan masyarakat;",
+          "3. Kegiatan koordinasikan upaya penyelenggaraan ketenteraman dan ketertiban umum;",
+          "4. Kegiatan koordinasi penerapan dan penegakan Perda dan Peraturan Bupati;",
+          "5. Kegiatan koordinasi pemeliharaan prasarana dan sarana pelayanan umum;",
+          "6. Kegiatan penyelenggaraan kegiatan pemerintahan yang dilakukan oleh Perangkat Daerah di tingkat kecamatan;",
+          "7. Kegiatan pembinaan dan pengewasan kegiatan desa atau sebutan lain dan/atau kelurahan;",
+          "8. Laporan kegiatan urusan pemerintahan yang menjadi kewenangan kabupaten yang tidak dilaksanakan oleh unit kerja pemerintahan daerah yang ada di kecamatan."
+        ]
+      },
+      {
+        "tipe": "Peraturan Bupati",
+        "isi": [
+          "1. Menyelenggarakan urusan pemerintahan umum;",
+          "2. Mengoordinasikan kegiatan pemberdayaan  masyarakat;",
+          "3. Mengoordinasikan upaya penyelenggaraan  ketenteraman dan ketertiban umum;",
+          "4. Mengoordinasikan penerapan dan penegakan peraturan daerah dan/atau peraturan Bupati;",
+          "5. Mengoordinasikan pemeliharaan prasarana dan sarana pelayanan umum;",
+          "6. Mengoordinasikan penyelenggaraan kegiatan pemerintahan yang dilakukan oleh Perangkat Daerah di tingkat Kecamatan;",
+          "7. Membina dan mengawasi penyelenggaraan kegiatan Desa dan/atau Kelurahan;",
+          "8. melaksanakan urusan pemerintahan yang menjadi kewenangan Kabupaten yang tidak dilaksanakan oleh unit kerja Pemerintah Daerah yang ada di Kecamatan;",
+          "9. Penyusunan kebijakan teknis operasional  Kecamatan;",
+          "10. Penyelenggaraan urusan pemerintahan,  pembangunan dan kemasyarakatan;",
+          "11. Penyelenggaraan pembinaan wilayah;",
+          "12. Pembinaan penyelenggaraan pemerintahan Desa dan Kelurahan;",
+          "13. Pelaksanaan pelayanan publik;",
+          "14. Penyusunan laporan kinerja secara periodik kepada Bupati;",
+          "15. Pelaksanaan fungsi kedinasan lain yang diberikan Bupati."
+        ]
+      },
+      {
+        "tipe": "Anggaran (DPA)",
+        "isi": [
+          "1. Program Penunjang Urusan Pemerintah Daerah Kabupaten/Kota",
+          "2. Program Penyelenggaraan Pemerintahan dan Pelayanan Publik",
+          "3. Program Pemberdayaan Masyarkat Desa dan Kelurahan",
+          "4. Program Koordinasi Ketenteraman dan Ketertiban Umum",
+          "5. Program Penyeenggaraan Urusan Pemerintah Umum",
+          "6. Program Pembinaan dan Pengawasan Pemerintah Desa"
+        ]
+      }
+    ],
+    "id": 1
+  },
+  {
+    "jabatan": "Sekretaris Kecamatan",
+    "tugas": [
+      {
+        "tipe": "Ringkasan Tugas Jabatan",
+        "isi": [
+          "Mengelola administrasi umum meliputi penyusunan program, ketatalaksanaan, ketatausahaan, keuangan, kepegawaian, urusan rumah tangga, perlengkapan, kehumasan dan kepustakaan serta kearsipan."
+        ]
+      },
+      {
+        "tipe": "Rincian Tugas Jabatan",
+        "isi": [
+          "1. Mengkoordinasikan penyusunan Rencana Strategis (Renstra) dan Rencana Kerja (Renja);",
+          "2. Mengkoordinasikan penyusunan Rencana Kerja Anggaran (RKA) dan Dokumen Pelaksanaan Anggaran (DPA);",
+          "3. Mengkoordinasikan penyusunan Penetapan Kinerja (PK);",
+          "4. Memimpin pelaksanaan dan pembinaan ketatausahaan, ketatalaksanaan dan kearsipan;",
+          "5. Mengkoordinasikan urusan kehumasan, keprotokolan dan kepustakaan;",
+          "6. Memverifikasi dan fasilitasi pengelolaan keuangan kelurahan/desa dan pendayagunaan aset daerah yang dikelola oleh kelurahan dan/atau desa;",
+          "7. Mengkoordinasikan inventarisasi aset/kekayaan daerah yang ada di Kecamatan;",
+          "8. Memimpin pelayanan administrasi dan pembinaan kepegawaian;",
+          "9. Memverifikasi pengelolaan dan administrasi anggaran dan retribusi;",
+          "10. Memverifikasi pengelolaan Administrasi keuangan dan pembayaran gaji pegawai;",
+          "11. Memverifikasi Surat Pertanggungjawaban (SPJ) keuangan;",
+          "12. Mengkoordinasikan pelaksanaan urusan rumah tangga dan perlengkapan;",
+          "13. Mengkoordinasikan pelaksanaan Standar Pelayanan Minimal (SPM);",
+          "14. Mengkoordinasikan pelaksanaan Standar Pelayanan Publik (SPP);",
+          "15. Memfasilitasi pengukuran Indeks Kepuasan Masyarakat (IKM) dan/atau pelaksanaan pengumpulan pendapat pelanggan secara periodic yang bertujuan untuk memperbaiki kualitas layanan;",
+          "16. Mengkoordinasikan penyusunan Laporan Akuntabilitas Kinerja Instansi Pemerintah (LAKIP);",
+          "17. Mengkoordinasikan penyelesaian pengaduan masyarakat;",
+          "18. Mengevaluasi laporan data hasil pembangunan dan informasi lainnya terkait layanan publik secara berkala melalui web site Pemerintah Daerah;",
+          "19. Melaksanakan tugas lain yang diberikan oleh Camat sesuai tugas dan fungsinya."
+        ]
+      },
+      {
+        "tipe": "Wewenang",
+        "isi": [
+          "1. Mengendalikan pelaksanaan kegiatan;",
+          "2. Menandatangani laporan dan berkas surat-surat;",
+          "3. Meneliti dan menyempurnakan hasil kerja bawahan;",
+          "4. Memberi masukan dan pertimbangan kepada atasan;",
+          "5. Menilai kinerja dan prestasi bawahan dalam melaksanakan tugas;",
+          "6. Memberi teguran dan sanksi kepada bawahan."
+        ]
+      },
+      {
+        "tipe": "Tanggung Jawab",
+        "isi": [
+          "1. Terlaksananya tugas dan fungsi;",
+          "2. Penyelesaian tugas tepat waktu;",
+          "3. Tersusunnya laporan pertanggungjawaban kegiatan;",
+          "4. Disiplin dan kualitas kinerja bawahan;",
+          "5. Distribusi tugas kepada bawahan."
+        ]
+      },
+      {
+        "tipe": "Hasil Kerja",
+        "isi": [
+          "1. Dokumen penyusunan Rencana Strategis (Renstra) dan Rencana Kerja (Renja);",
+          "2. Dokumen penyusunan Rencana Kerja Anggaran (RKA) dan Dokumen Pelaksanaan Anggaran (DPA);",
+          "3. Dokumen penyusunan Penetapan Kinerja (PK);",
+          "4. Kegiatan pembinaan ketatausahaan, ketatalaksanaan dan kearsipan;",
+          "5. Kegiatan koordinasi urusan kehumasan, keprotokolan dan kepustakaan;",
+          "6. Kegiatan verifikasi dan fasilitasi pengelolaan keuangan kelurahan/desa dan pendayagunaan aset daerah yang dikelola oleh kelurahan dan/atau desa;",
+          "7. Kegiatan inventarisasi aset/kekayaan daerah yang ada di Kecamatan;",
+          "8. Kegiatan pelayanan administrasi dan pembinaan kepegawaian;",
+          "9. Kegiatan verifikasi pengelolaan dan administrasi anggaran dan retribusi;",
+          "10. Dokumen verifikasi pengelolaan  Administrasi keuangan dan pembayaran gaji pegawai;",
+          "11. Dokumen verifikasi Surat  Pertanggung jawaban (SPJ) keuangan;",
+          "12. Kegiatan koordinasi pelaksanaan urusan rumah tangga dan perlengkapan;",
+          "13. Kegiatan koordinasi pelaksanaan Standar Pelayanan Minimal (SPM);",
+          "14. Kegiatan koordinasi Standar Pelayanan Publik (SPP);",
+          "15. Dokumen pengukuran Indeks Kepuasan Masyarakat (IKM) dan/atau pelaksanaan pengumpulan pendapat pelanggan secara periodic yang bertujuan untuk memperbaiki kualitas layanan;",
+          "16. Laporan Akuntabilitas Kinerja Instansi Pemerintah (LAKIP);",
+          "17. Laporan penyelesaian pengaduan masyarakat;",
+          "18. Laporan data hasil pembangunan dan informasi lainnya terkait layanan publik secara berkala melalui web site Pemerintah Daerah;",
+          "19. Laporan pelaksanaan tugas lain yang diberikan oleh Camat sesuai tugas dan fungsinya."
+        ]
+      },
+      {
+        "tipe": "Peraturan Bupati",
+        "isi": [
+          "1. Pengoordinasian penyusunan rencana strategis dan rencana kerja;",
+          "2. Pengoordinasian penyusunan rencana kerja anggaran dan dokumen pelaksanaan anggaran;",
+          "3. Pengoordinasian penyusunan penetapan kinerja;",
+          "4. Pelaksanaan dan pembinaan ketatausahaan, ketatalaksanaan dan kearsipan;",
+          "5. Pengoordinasian urusan kehumasan, keprotokolan dan kepustakaan;",
+          "6. Verifikasi dan fasilitasi pengelolaan keuangan kelurahan/ desa dan pendayagunaan aset daerah yang dikelola oleh Kelurahan dan/ atau Desa;",
+          "7. Pengoordinasian inventarisasi aset/kekayaan daerah yang ada di Kecamatan;",
+          "8. Pengelolaan layanan administrasi dan pembinaan kepegawaian;",
+          "9. Verifikasi pengelolaan dan administrasi anggaran dan retribusi;",
+          "10. Verifikasi pengelolaan administrasi keuangan dan pembayaran gaji pegawai;",
+          "11. Verifikasi surat pertanggungjawaban keuangan;",
+          "12. Pengoordinasian pelaksanaan urusan rumah tangga dan perlengkapan;",
+          "13. Pengoordinasian pelaksanaan standar pelayanan minimal;",
+          "14. Pengoordinasian pelaksanaan standar pelayanan publik;",
+          "15. Fasilitasi pengukuran indeks kepuasan masyarakat dan/ atau pelaksanaan pengumpulan pendapat pelanggan secara periodik yang bertujuan untuk memperbaiki kualitas layanan;",
+          "16. Pengoordinasian penyusunan laporan akuntabilitas kinerja instansi pemerintah;",
+          "17. Pengoordinasian penyelesaian pengaduan masyarakat;",
+          "18. Evaluasi laporan data hasil pembangunan dan informasi lainnya terkait layanan publik secara berkala melalui website Pemerintah Daerah; dan",
+          "19. Pelaksanaan fungsi kedinasan lain yang diberikan Camat."
+        ]
+      },
+      {
+        "tipe": "Anggaran (DPA)",
+        "isi": [
+          "1. Perencanaan, Penganggaran, dan Evaluasi Kinerja Perangkat Daerah;",
+          "2. Administrasi Keuangan Perangkat Daerah;",
+          "3. Administrasi Barang Milik Daerah pada Perangkat Daerah;",
+          "4. Administrasi Kepegawaian Perangkat Daerah;",
+          "5. Administrasi Umum Perangkat Daerah;",
+          "6. Pengadaan Barang Milik Daerah Penunjang Urusan Pemerintah Daerah;",
+          "7. Penyediaan Jasa Penunjang Urusan Pemerintahan Daerah;",
+          "8. Pemeliharaan Barang Milik Daerah Penunjang Urusan Pemerintahan Daerah."
+        ]
+      }
+    ],
+    "id": 2
+  },
+  {
+    "jabatan": "Kepala Sub Bagian Umum dan Kepegawaian",
+    "tugas": [
+      {
+        "tipe": "Ringkasan Tugas Jabatan",
+        "isi": [
+          "Melaksanakan tugas pokok pengelolaan administrasi umum meliputi ketatalaksanaan, ketatausahaan, kepegawaian, urusan rumah tangga, perlengkapan, kehumasan dan kepustakaan serta kearsipan."
+        ]
+      },
+      {
+        "tipe": "Rincian Tugas Jabatan",
+        "isi": [
+          "1. Melaksanakan ketatausahaan, ketatalaksanaan dan kearsipan;",
+          "2. Melaksanakan  administrasi dan pembinaan kepegawaian;",
+          "3. Melaksanakan urusan rumah tangga dan perlengkapan;",
+          "4. Melaksanakan kehumasan, keprotokolan dan kepustakaan ;",
+          "5. Melaksanakan pengaduan masyarakat;",
+          "6. Melaksanakan dan pelaporan pelaksanaan tugas pokok dan fungsi;",
+          "7. Melaksanakan tugas lain yang diberikan oleh Sekretaris sesuai tugas dan fungsinya."
+        ]
+      },
+      {
+        "tipe": "Wewenang",
+        "isi": [
+          "1. Membantu pimpinan untuk melakukan koordinasi dalam rangka pelaksanaan tugas;",
+          "2. Memberi masukan dan pertimbangan kepada atasan;",
+          "3. Menilai kinerja dan prestasi bawahan dalam melaksanakan tugas;",
+          "4. Memberi teguran dan sanksi kepada bawahan."
+        ]
+      },
+      {
+        "tipe": "Tanggung Jawab",
+        "isi": [
+          "1. Pengumpulan data yang cepat dan akurat;",
+          "2. Penyelesaian tugas tepat waktu;",
+          "3. Distribusi tugas kepada bawahan."
+        ]
+      },
+      {
+        "tipe": "Hasil Kerja",
+        "isi": [
+          "1. Kegiatan ketatausahaan, ketatalaksanaan dan kearsipan;",
+          "2. Kegiatan administrasi dan pembinaan kepegawaian;",
+          "3. Kegiatan kehumasan, keprotokolan dan kepustakaan;",
+          "4. Kegiatan urusan rumah tangga dan perlengkapan;",
+          "5. Kegiatan urusan rumah tangga dan perlengkapan;",
+          "6. Laporan pengaduan masyarakat;",
+          "7. Laporan pelaksanaan tugas pokok dan fungsi."
+        ]
+      },
+      {
+        "tipe": "Peraturan Bupati",
+        "isi": [
+          "1. Melaksanakan ketatausahaan, ketatalaksanaan dan kearsipan;",
+          "2. Melaksanakan administrasi dan pembinaan  kepegawaian;",
+          "3. Melaksanakan urusan rumah tangga dan perlengkapan;",
+          "4. Melaksanakan kehumasan, keprotokolan dan kepustakaan;",
+          "5. Melaksanakan pengaduan masyarakat;",
+          "6. Melaksanakan dan pelaporan pelaksanaan tugas; dan",
+          "7. Melaksanakan tugas kedinasan lain yang diberikan Sekretaris."
+        ]
+      },
+      {
+        "tipe": "Anggaran (DPA)",
+        "isi": [
+          "1. Penatausahaan Barang Milik Daerah pada SKPD;",
+          "2. Pengadaan Pakaian Dinas beserta Atribut Kelengkapannya;",
+          "3. Pendidikan dan Pelatihan Pegawai Berdasarkan Tugas dan Fungsi;",
+          "4. Bimbingan Teknis Implementasi Peraturan Perundang-Undangan;",
+          "5. Penyediaan Komponen Instalasi Listrik/Penerangan Bangunan Kantor;",
+          "6. Penyediaan Peralatan dan Perlengkapan Kantor;",
+          "7. Penyediaan Peralatan Rumah Tangga;",
+          "8. Penyediaan Bahan Logistik Kantor;",
+          "9. Penyediaan Barang Cetakan dan Penggandaan;",
+          "10. Penyelenggaraan Rapat Koordinasi dan Konsultasi SKPD;",
+          "11. Pengadaan Peralatan dan Mesin Lainnya."
+        ]
+      }
+    ],
+    "id": 3
+  },
+  {
+    "jabatan": "Kepala Sub Bagian Penyusunan Program dan Keuangan",
+    "tugas": [
+      {
+        "tipe": "Ringkasan Tugas Jabatan",
+        "isi": [
+          "Melaksanakan tugas pokok penyusunan program, evaluasi, pelaporan dan keuangan"
+        ]
+      },
+      {
+        "tipe": "Rincian Tugas Jabatan",
+        "isi": [
+          "1. Menyusun Rencana Strategis (Renstra) dan Rencana Kerja (Renja) ;",
+          "2. Menyusun Rencana Kerja  Anggaran (RKA) dan Dokume nPelaksanaan Anggaran (DPA) ;",
+          "3. Menyusun Penetapan Kinerja (PK);",
+          "4. Menyusun laporan dan dokumentasi pelaksanaan program dan kegiatan ;",
+          "5. Menyusun dan pelaksanaan Standar Pelayanan  Publik (SPP);",
+          "6. Menyusun pengukuran Indeks Kepuasan Masyarakat (IKM) dan/atau pelaksanaan pengumpulan pendapat pelanggan secara periodik yang bertujuan untuk memperbaiki kualitas layanan;",
+          "7. Menyusun Laporan Akuntabilitas Kinerja Instansi Pemerintah (LAKIP);",
+          "8. Merencanakan penyusunan Dokumen Pelaksanaan Anggaran (DPA);",
+          "9. Menyusun penatausahaankeuangan ;",
+          "10. Menyusun SuraPertanggungjawaban (SPJ) keuangan;",
+          "11. Menyusun danmenyampaikan laporan penggunaananggaran;",
+          "12. Menyusun dan menyampaikan  laporan keuangan semesteran dan akhir tahun ;",
+          "13. Menyusun administrasi dan melaksanakan pembayaran gaji pegawai;",
+          "14. Menyusun laporanpenerimaan, pengadministrasian dan penyetoran retribusi dan/atau lain-lain pendapatan yang sah;",
+          "15. Menyusun laporan data hasil pembangunan dan informasi lainnya terkait layanan publik secara berkala melalui web site Pemerintah Daerah;",
+          "16. Menyusun laporan evalusi pelaksanaan tugas pokok dan fungsi;",
+          "17. Melaksanakan tugas lain yang diberikan oleh Sekretaris sesuai tugas dan fungsinya."
+        ]
+      },
+      {
+        "tipe": "Wewenang",
+        "isi": [
+          "1. Membantu pimpinan untuk melakukan koordinasi dalam rangka pelaksanaan tugas;",
+          "2. Memberi masukan dan pertimbangan kepada atasan;",
+          "3. Menilai kinerja dan prestasi bawahan dalam melaksanakan tugas;",
+          "4. Memberi teguran dan sanksi kepada bawahan."
+        ]
+      },
+      {
+        "tipe": "Tanggung Jawab",
+        "isi": [
+          "1. Pengumpulan data yang cepat dan akurat;",
+          "2. Penyelesaian tugas tepat waktu;",
+          "3. Distribusi tugas kepada bawahan."
+        ]
+      },
+      {
+        "tipe": "Hasil Kerja",
+        "isi": [
+          "1. Konsep Rencana Strategis (Renstra) dan Rencana Kerja (Renja);",
+          "2. Konsep Rencana Kerja Anggaran (RKA) dan Dokumen Pelaksanaan Anggaran (DPA);",
+          "3. Konsep Penetapan Kinerja (PK);",
+          "4. Laporan dan dokumentasi pelaksanaan program dan kegiatan;",
+          "5. Dokumen Standar Pelayanan Publik (SPP);",
+          "6. Dokumen pengukuran Indeks Kepuasan Masyarakat (IKM) dan/atau pelaksanaan pengumpulan pendapat pelanggan secara periodic yang bertujuan untuk memperbaiki kualitas layanan;",
+          "7. Laporan Akuntabilitas Kinerja Instansi Pemerintah (LAKIP);",
+          "8. Dokumen Rencana penyusunan Dokumen Pelaksanaan Anggaran (DPA);",
+          "9. Dokumen penatausahaan keuangan;",
+          "10. Dokumen Surat Pertanggungjawaban (SPJ) keuangan;",
+          "11. Laporan penggunaan anggaran;",
+          "12. Laporan keuangan semesteran dan akhir tahun;",
+          "13. Laporan administrasi dan pelaksanaan pembayaran gaji pegawai;",
+          "14. Laporan penerimaan, pengadministrasian dan penyetoran  retribusi dan/atau lain-lain pendapatan yang sah;",
+          "15. Laporan data hasil pembangunan dan informasi lainnya terkaitlayanan publik secara berkala melalui web site Pemerintah Daerah;",
+          "16. Laporan evalusi pelaksanaan tugas pokok dan fungsi;",
+          "17. Laporan pelaksanaan tugas lain yang diberikan oleh Sekretaris  sesuai tugas dan fungsinya."
+        ]
+      },
+      {
+        "tipe": "Peraturan Bupati",
+        "isi": [
+          "1. Menyusun rencana strategis dan rencana kerja;",
+          "2. Menyusun rencana kerja anggaran dan dokumen pelaksanaan anggaran;",
+          "3. Menyusun penetapan kinerja;",
+          "4. Menyusun laporan dan dokumentasi pelaksanaan program dan kegiatan;",
+          "5. Menyusun dan pelaksanaan standar pelayanan publik;",
+          "6. Menyusun pengukuran indeks kepuasan masyarakat dan/ atau pelaksanaan pengumpulan pendapat pelanggan secara periodik yang bertujuan untuk memperbaiki kualitas layanan;",
+          "7. Menyusun pengukuran indeks kepuasan masyarakat dan/ atau pelaksanaan pengumpulan pendapat pelanggan secara periodik yang bertujuan untuk memperbaiki kualitas layanan;",
+          "8. Merencanakan penyusunan dokumen pelaksanaan anggaran;",
+          "9. Menyusun penatausahaan keuangan;",
+          "10. Menyusun surat pertanggungjawaban keuangan;",
+          "11. Menyusun dan menyampaikan laporan penggunaan anggaran;",
+          "12. Menyusun dan menyampaikan laporan keuangan semesteran dan akhir tahun;",
+          "13. Menyusun administrasi dan melaksanakan pembayaran gaji pegawai;",
+          "14. Menyusun laporan penerimaan, pengadministrasian dan penyetoran retribusi dan/atau lain-lain pendapatan yang sah;",
+          "15. Menyusun laporan data hasil pembangunan dan informasi lainnya terkait layanan publik secara berkala melalui website Pemerintah Daerah;",
+          "16. Menyusun laporan evalusi pelaksanaan tugas dan fungsi; dan",
+          "17. Melaksanakan tugas kedinasan lain yang diberikan Sekretaris."
+        ]
+      },
+      {
+        "tipe": "Anggaran (DPA)",
+        "isi": [
+          "1. Penyusunan Dokumen Perencanaan Perangkat Daerah;",
+          "2. Evaluasi Kinerja Perangkat Daerah;",
+          "3. Penyelenggaraan Walidata Pendukung Statistik Sektoral Daerah;",
+          "4. Penyediaan Gaji dan Tunjangan ASN;",
+          "5. Pelaksanaan Penatausahaan dan Pengujian/Verifikasi Keuangan SKPD;",
+          "6. Koordinasi dan Penyusunan Laporan Keuangan Bulanan/ Triwulanan/ Semesteran SKPD;",
+          "7. Penyediaan Jasa Komunikasi, Sumber Daya Air dan Listrik;",
+          "8. Penyediaan Jasa Pelayanan Umum Kantor."
+        ]
+      }
+    ],
+    "id": 4
+  }
+]

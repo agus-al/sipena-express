@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard SIPENA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --navy:    #1a2e4a;
+            --blue:    #1e4080;
+            --accent:  #3b82f6;
+            --light:   #e8f0fe;
+            --white:   #ffffff;
+            --gray-bg: #f1f5f9;
+            --gray-txt:#64748b;
+            --green:   #10b981;
+            --yellow:  #f59e0b;
+            --red:     #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-bg);
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        /* ─── TOPBAR (mobile) ─── */
+        .topbar {
+            display: none;
+            background: var(--navy);
+            color: var(--white);
+            padding: 14px 18px;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .topbar .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: 1px; }
+        .hamburger {
+            background: none; border: none; cursor: pointer;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+        .hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--white); border-radius: 2px;
+            transition: .3s;
+        }
+
+        /* ─── LAYOUT ─── */
+        .layout { display: flex; min-height: 100vh; }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 28px 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+        .sidebar-header .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+        .sidebar-header .logo-sub {
+            font-size: .7rem;
+            color: rgba(255,255,255,.5);
+            margin-top: 2px;
+            letter-spacing: .5px;
+        }
+
+        .sidebar nav { padding: 16px 12px; flex: 1; }
+
+        .nav-label {
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,.4);
+            padding: 12px 8px 6px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: rgba(255,255,255,.75);
+            text-decoration: none;
+            font-size: .875rem;
+            font-weight: 500;
+            transition: background .2s, color .2s;
+            margin-bottom: 2px;
+        }
+        .nav-link:hover { background: rgba(255,255,255,.1); color: var(--white); }
+        .nav-link.active { background: var(--accent); color: var(--white); }
+        .nav-link .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+        .nav-link.logout { color: #fca5a5; margin-top: 8px; }
+        .nav-link.logout:hover { background: rgba(239,68,68,.2); color: #fca5a5; }
+
+        /* ─── OVERLAY (mobile) ─── */
+        .overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.5);
+            z-index: 98;
+        }
+        .overlay.show { display: block; }
+
+        /* ─── MAIN CONTENT ─── */
+        .main { flex: 1; padding: 28px; overflow-y: auto; }
+
+        /* ─── TOPNAV ─── */
+        .topnav {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 14px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        }
+        .topnav h2 { font-size: 1.125rem; font-weight: 700; color: #0f172a; }
+        .topnav .welcome {
+            font-size: .875rem;
+            color: var(--gray-txt);
+        }
+        .topnav .welcome span { font-weight: 700; color: var(--blue); }
+
+        /* ─── STAT CARDS ─── */
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+
+        .card {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 22px 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .card-icon {
+            width: 52px; height: 52px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .card-icon.blue   { background: #dbeafe; }
+        .card-icon.green  { background: #d1fae5; }
+        .card-icon.yellow { background: #fef3c7; }
+
+        .card-body p { font-size: .8rem; color: var(--gray-txt); font-weight: 500; margin-bottom: 4px; }
+        .card-body .num {
+            font-size: 2rem; font-weight: 700; line-height: 1;
+        }
+        .num.blue   { color: var(--accent); }
+        .num.green  { color: var(--green); }
+        .num.yellow { color: var(--yellow); }
+
+        /* ─── INFO SECTION ─── */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+        .info-card {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        }
+        .info-card h3 {
+            font-size: .9rem; font-weight: 700; margin-bottom: 14px;
+            color: #0f172a;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .info-card h3 .dot {
+            width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+            display: inline-block;
+        }
+
+        .info-row {
+            display: flex; justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: .82rem;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-row .label { color: var(--gray-txt); }
+        .info-row .val { font-weight: 600; color: #1e293b; }
+
+        .badge {
+            font-size: .7rem; font-weight: 600;
+            padding: 2px 8px; border-radius: 20px;
+        }
+        .badge.hadir  { background: #d1fae5; color: #065f46; }
+        .badge.cuti   { background: #fef3c7; color: #92400e; }
+        .badge.izin   { background: #dbeafe; color: #1e40af; }
+
+        /* ─── WELCOME BANNER ─── */
+        .banner {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--accent) 100%);
+            border-radius: 14px;
+            padding: 22px 24px;
+            color: var(--white);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .banner .text h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+        .banner .text p { font-size: .8rem; opacity: .8; }
+        .banner .illus { font-size: 2.5rem; opacity: .9; }
+
+        /* ─── MOBILE ─── */
+        @media (max-width: 768px) {
+            .topbar { display: flex; }
+
+            .sidebar {
+                position: fixed;
+                top: 0; left: -260px;
+                height: 100%;
+                z-index: 99;
+                width: 240px;
+                transition: left .3s ease;
+            }
+            .sidebar.open { left: 0; }
+
+            .layout { display: block; }
+            .main { padding: 16px; }
+
+            .topnav { display: none; }
+
+            .stats { grid-template-columns: 1fr; gap: 12px; }
+            .info-grid { grid-template-columns: 1fr; }
+
+            .card { padding: 16px; }
+            .card-body .num { font-size: 1.7rem; }
+
+            .banner { flex-direction: column; gap: 10px; text-align: center; }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .stats { grid-template-columns: repeat(3, 1fr); }
+            .info-grid { grid-template-columns: 1fr; }
+            .main { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Topbar mobile -->
+<div class="topbar">
+    <span class="logo">SIPENA</span>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-text">SIPENA</div>
+            <div class="logo-sub">Sistem Informasi Pegawai</div>
+        </div>
+        <nav>
+            <div class="nav-label">Menu Utama</div>
+            <a href="index.html" class="nav-link active">
+                <span class="icon">🏠</span> Dashboard
+            </a>
+            <a href="detail_pegawai.html" id="linkDataSaya" class="nav-link">
+                <span class="icon">👤</span> Data Saya
+            </a>
+
+            <div class="nav-label">Informasi</div>
+            <a href="struktur.html" class="nav-link">
+                <span class="icon">📊</span> Struktur Organisasi
+            </a>
+            <a href="tupoksi.html" class="nav-link">
+                <span class="icon">📋</span> TUPOKSI
+            </a>
+
+            <div class="nav-label">Akun</div>
+            <a href="/auth/logout" class="nav-link logout">
+                <span class="icon">🚪</span> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- Topnav (desktop) -->
+        <div class="topnav">
+            <h2>Dashboard</h2>
+            <div class="welcome">Selamat datang, <span id="namaUser">User</span></div>
+        </div>
+
+        <!-- Welcome banner -->
+        <div class="banner">
+            <div class="text">
+                <h3>Selamat datang, <span id="namaUserBanner">User</span>! 👋</h3>
+                <p>Kecamatan Gandusari — Hari ini <span id="tanggalHari"></span></p>
+            </div>
+            <div class="illus">🏛️</div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stats">
+            <div class="card">
+                <div class="card-icon blue">👥</div>
+                <div class="card-body">
+                    <p>Total Pegawai</p>
+                    <div class="num blue" id="totalPegawai">—</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon green">✅</div>
+                <div class="card-body">
+                    <p>Hadir Hari Ini</p>
+                    <div class="num green" id="hadirHariIni">0</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon yellow">🏖️</div>
+                <div class="card-body">
+                    <p>Sedang Cuti</p>
+                    <div class="num yellow" id="sedangCuti">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+            <!-- Info Instansi -->
+            <div class="info-card">
+                <h3><span class="dot"></span> Informasi Instansi</h3>
+                <div class="info-row">
+                    <span class="label">Unit Kerja</span>
+                    <span class="val">Kecamatan Gandusari</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Kabupaten</span>
+                    <span class="val">Blitar</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Provinsi</span>
+                    <span class="val">Jawa Timur</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Total Pegawai</span>
+                    <span class="val" id="totalPegawai2">—</span>
+                </div>
+            </div>
+
+            <!-- Rekap Kehadiran -->
+            <div class="info-card">
+                <h3><span class="dot"></span> Rekap Kehadiran</h3>
+                <div class="info-row">
+                    <span class="label">Hadir</span>
+                    <span class="badge hadir" id="badgeHadir">0 Orang</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Cuti</span>
+                    <span class="badge cuti" id="badgeCuti">0 Orang</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Izin</span>
+                    <span class="badge izin" id="badgeIzin">0 Orang</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Tidak Hadir</span>
+                    <span class="val" id="valTidakHadir">0 Orang</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    // ── Tanggal ──
+    const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    const now = new Date();
+    document.getElementById('tanggalHari').textContent =
+        `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
+
+    // ── User ──
+    fetch('/auth/me')
+        .then(r => r.json())
+        .then(d => {
+            document.getElementById('namaUser').textContent = d.nama;
+            document.getElementById('namaUserBanner').textContent = d.nama;
+            if (d.id) document.getElementById('linkDataSaya').href = `/detail_pegawai.html?id=${d.id}`;
+        })
+        .catch(() => {});
+
+    // ── Total Pegawai ──
+    fetch('/pegawai')
+        .then(r => r.json())
+        .then(d => {
+            document.getElementById('totalPegawai').textContent = d.length;
+            document.getElementById('totalPegawai2').textContent = d.length + ' Orang';
+        })
+        .catch(() => {});
+
+    // ── Hamburger (mobile) ──
+    const btn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    btn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+    });
+</script>
+
+</body>
+</html>

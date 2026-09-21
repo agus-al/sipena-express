@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPK Periodik - Sasaran Kinerja Pegawai (REST API)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --blue: #1a56c4;
+            --blue-dark: #0f3a8a;
+            --blue-light: #dbeafe;
+            --teal: #0d9488;
+            --teal-light: #ccfbf1;
+            --red: #dc2626;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+            color: white;
+            padding: 12px 24px;
+            box-shadow: 0 4px 16px rgba(26, 86, 196, 0.3);
+        }
+
+        .navbar-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .app-header .logo {
+            background: white;
+            color: var(--blue-dark);
+            font-weight: 800;
+            font-size: 20px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-text h1 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .brand-text p {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            margin: 2px 0 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .nav-menu a {
+            background: transparent;
+            text-decoration: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1.0rem;
+            transition: all 0.2s;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 640px) {
+            .navbar-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-menu {
+                justify-content: center;
+            }
+            .brand-text h1 {
+                font-size: 0.9rem;
+            }
+        }
+
+        .controls-bar {
+            background: white;
+            border-bottom: 2px solid var(--blue-light);
+            padding: 14px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            white-space: nowrap;
+        }
+
+        select,
+        input[type="text"],
+        textarea {
+            border: 1.5px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 7px 12px;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--gray-800);
+            background: var(--gray-50);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        select:focus,
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--blue);
+            background: white;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--blue-dark);
+        }
+        .btn-success {
+            background: var(--teal);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #0f766e;
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-edit {
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        .btn-edit:hover {
+            background: #bfdbfe;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            padding: 16px 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 18px;
+            flex: 1;
+            min-width: 140px;
+            border-left: 4px solid var(--blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        .stat-card .num {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--blue-dark);
+        }
+        .stat-card .lbl {
+            font-size: 11px;
+            color: var(--gray-600);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .stat-card.teal {
+            border-left-color: var(--teal);
+        }
+        .stat-card.teal .num {
+            color: var(--teal);
+        }
+        .stat-card.amber {
+            border-left-color: #f59e0b;
+        }
+        .stat-card.amber .num {
+            color: #b45309;
+        }
+
+        .table-wrap {
+            padding: 0 24px 24px;
+            overflow-x: auto;
+        }
+
+        .table-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-title span {
+            background: var(--blue-light);
+            color: var(--blue-dark);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            min-width: 1100px;
+        }
+
+        thead tr {
+            background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+            color: white;
+        }
+        thead th {
+            padding: 12px 14px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            line-height: 1.4;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        thead th:last-child {
+            border-right: none;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--gray-100);
+            transition: background 0.15s;
+        }
+        tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        td {
+            padding: 11px 14px;
+            font-size: 12.5px;
+            color: var(--gray-700);
+            vertical-align: middle;
+            border-right: 1px solid var(--gray-100);
+        }
+        td:last-child {
+            border-right: none;
+        }
+        td.center {
+            text-align: center;
+        }
+
+        .badge-aspek {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--teal-light);
+            color: var(--teal);
+        }
+
+        .target-val {
+            font-weight: 700;
+            color: var(--blue-dark);
+            font-size: 13px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--gray-600);
+        }
+        .empty-state .icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            width: 96%;
+            max-width: 620px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.25s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--blue-dark);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+            resize: vertical;
+            background: white;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--blue);
+            background: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .btn-cancel {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 9px 18px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-cancel:hover {
+            background: var(--gray-200);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--teal);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1100;
+            animation: slideIn 0.3s ease;
+        }
+        .toast.error {
+            background: var(--red);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            font-size: 24px;
+            color: white;
+        }
+
+        .dropdown-info {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+        .dropdown-info i {
+            color: var(--teal);
+        }
+        hr.divider {
+            margin: 16px 0;
+            border: 0;
+            border-top: 2px dashed var(--gray-200);
+        }
+
+        .field-manual {
+            border-left: 3px solid var(--teal);
+            padding-left: 12px;
+        }
+        .field-manual label {
+            font-weight: 700;
+            color: var(--teal);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <div class="logo">SKP</div>
+                <div class="brand-text">
+                    <h1>Sasaran Kinerja Pegawai (SKP) Periodik</h1>
+                    <p>Sub Bagian Umum dan Kepegawaian</p>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="kinerja.html">Kinerja</a>
+                <a href="/skp_periodik.html">SKP Periodik</a>
+                <a href="/penilaian.html">Penilaian</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls-bar">
+        <div class="filter-group">
+            <label>Bulan:</label>
+            <select id="filterBulan">
+                <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+                <option value="4">April</option><option value="5" selected>Mei</option><option value="6">Juni</option>
+                <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+                <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+            </select>
+            <label>Tahun:</label>
+            <select id="filterTahun">
+                <option value="2024">2024</option><option value="2025">2025</option>
+                <option value="2026" selected>2026</option><option value="2027">2027</option><option value="2028">2028</option>
+            </select>
+            <label>NIP:</label>
+            <select id="filterNip">
+                <option value="">-- Semua NIP --</option>
+            </select>
+            <button class="btn btn-primary" onclick="applyFilter()"><i class="fas fa-search"></i> Tampilkan</button>
+        </div>
+        <button class="btn btn-success" onclick="openModal()"><i class="fas fa-plus"></i> Tambah Data</button>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card"><div class="num" id="statTotal">0</div><div class="lbl">Total Hasil Kerja</div></div>
+        <div class="stat-card teal"><div class="num" id="statUtama">0</div><div class="lbl">Kategori Utama</div></div>
+        <div class="stat-card amber"><div class="num" id="statTambahan">0</div><div class="lbl">Kategori Tambahan</div></div>
+    </div>
+
+    <div class="table-wrap">
+        <div class="table-title">
+            <i class="fas fa-tasks"></i> HASIL KERJA
+            <span id="periodLabel">Mei 2026</span>
+        </div>
+        <table id="skpTable">
+            <thead>
+                <tr>
+                    <th>NO.</th>
+                    <th>RENCANA HASIL KERJA PIMPINAN</th>
+                    <th>RENCANA HASIL KERJA</th>
+                    <th>RENCANA AKSI</th>
+                    <th>ASPEK</th>
+                    <th>INDIKATOR KINERJA</th>
+                    <th>TARGET BULANAN</th>
+                    <th>AKSI</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr><td colspan="8" style="text-align:center;padding:40px;">Memuat data...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ============================================================
+    MODAL TAMBAH/EDIT
+    ============================================================ -->
+    <div class="modal-backdrop" id="modalBackdrop">
+        <div class="modal">
+            <h2 id="modalTitle"><i class="fas fa-plus"></i> Tambah Data</h2>
+
+            <!-- DROPDOWN SKP TAHUNAN -->
+            <div class="form-group" style="background: #f0f7ff; padding: 14px 16px; border-radius: 10px; border-left: 4px solid var(--blue);">
+                <label for="skpTahunanSelect" style="font-weight:700; color:var(--blue-dark);">
+                    <i class="fas fa-database"></i> Ambil dari SKP Tahunan
+                </label>
+                <select id="skpTahunanSelect" onchange="isiOtomatisDariSKP(this.value)" style="background:white;">
+                    <option value="">-- Pilih Data SKP Tahunan --</option>
+                </select>
+                <div class="dropdown-info">
+                    <i class="fas fa-info-circle"></i> Pilih data dari SKP Tahunan, maka 3 field di bawah akan terisi otomatis.
+                    <br><strong>Catatan:</strong> Field dapat diedit manual setelah terisi.
+                </div>
+            </div>
+            <hr class="divider" />
+
+            <!-- FIELD OTOMATIS (sekarang dapat diedit) -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <select id="fKategori" style="background:white;">
+                        <option>Utama</option>
+                        <option>Tambahan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Aspek</label>
+                    <input type="text" id="fAspek" placeholder="Akan terisi otomatis" style="background:white;" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Rencana Hasil Kerja Pimpinan yang Diintervensi</label>
+                <input type="text" id="fPimpinan" placeholder="Akan terisi otomatis" style="background:white;" />
+            </div>
+
+            <div class="form-group">
+                <label>Rencana Hasil Kerja</label>
+                <textarea id="fRHK" rows="2" placeholder="Akan terisi otomatis" style="background:white;"></textarea>
+            </div>
+
+            <hr class="divider" />
+
+            <!-- FIELD MANUAL (WAJIB DIISI) -->
+            <div class="form-group field-manual">
+                <label><i class="fas fa-pen"></i> Indikator Kinerja Individu <span style="color:var(--red);">*</span></label>
+                <input type="text" id="fIndikator" placeholder="Masukkan indikator kinerja..." style="background:white;" />
+            </div>
+
+            <div class="form-group field-manual">
+                <label><i class="fas fa-pen"></i> Target Bulanan (Nilai Satuan) <span style="color:var(--red);">*</span></label>
+                <input type="text" id="fTarget" placeholder="Contoh: 1 Dokumen" style="background:white;" />
+            </div>
+
+            <div class="form-group field-manual">
+                <label><i class="fas fa-pen"></i> Rencana Aksi <span style="color:var(--red);">*</span></label>
+                <textarea id="fAksi" rows="3" placeholder="Masukkan rencana aksi... (wajib diisi)" style="background:white;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Jenis</label>
+                <select id="fOrg">
+                    <option value="Organisasi">Organisasi</option>
+                    <option value="Individu">Individu</option>
+                    <option value="">-</option>
+                </select>
+            </div>
+
+            <input type="hidden" id="skpTahunanId" value="" />
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()"><i class="fas fa-times"></i> Batal</button>
+                <button class="btn btn-success" onclick="saveData()"><i class="fas fa-save"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // KONFIGURASI
+        // ============================================================
+        const API_BASE = '/skp_periodik';
+        let currentBulan = 5,
+            currentTahun = 2026;
+        let currentData = [];
+        let editId = null;
+
+        const BULAN_NAMES = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        // ============================================================
+        // HELPER
+        // ============================================================
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function setLoading(loading) {
+            let overlay = document.querySelector('.loading-overlay');
+            if (loading && !overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'loading-overlay';
+                overlay.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Loading...';
+                document.body.appendChild(overlay);
+            } else if (!loading && overlay) overlay.remove();
+        }
+
+        // ============================================================
+        // LOAD DROPDOWN SKP TAHUNAN (dengan filter NIP)
+        // ============================================================
+        async function loadSkpTahunanList() {
+            try {
+                const nip = document.getElementById('filterNip').value;
+                let url = `${API_BASE}/skp-tahunan`;
+                if (nip) {
+                    url += `?nip=${nip}`;
+                }
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const result = await response.json();
+                if (!result.success) throw new Error(result.message);
+
+                const select = document.getElementById('skpTahunanSelect');
+                // Kosongkan opsi selain yang pertama
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                result.data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = `${item.rhk_pimpinan} - ${item.rencana_hasil_kerja}`;
+                    select.appendChild(option);
+                });
+                return true;
+            } catch (error) {
+                console.error('Error load SKP Tahunan:', error);
+                const select = document.getElementById('skpTahunanSelect');
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = '❌ Gagal memuat data (lihat console)';
+                option.disabled = true;
+                select.appendChild(option);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // ISI OTOMATIS DARI SKP TAHUNAN
+        // ============================================================
+        async function isiOtomatisDariSKP(skpTahunanId) {
+            if (!skpTahunanId) {
+                // Kosongkan field jika tidak ada pilihan
+                document.getElementById('fKategori').value = 'Utama';
+                document.getElementById('fAspek').value = '';
+                document.getElementById('fPimpinan').value = '';
+                document.getElementById('fRHK').value = '';
+                document.getElementById('skpTahunanId').value = '';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/skp-tahunan/${skpTahunanId}`);
+                const result = await response.json();
+                if (!result.success) {
+                    showToast('Gagal mengambil detail SKP Tahunan: ' + result.message, true);
+                    return;
+                }
+                const data = result.data;
+                document.getElementById('fKategori').value = data.tipo || 'Utama';
+                document.getElementById('fAspek').value = data.aspek || '';
+                document.getElementById('fPimpinan').value = data.rhk_pimpinan || '';
+                document.getElementById('fRHK').value = data.rencana_hasil_kerja || '';
+                document.getElementById('skpTahunanId').value = data.id;
+                // Fokus ke indikator
+                document.getElementById('fIndikator').focus();
+            } catch (error) {
+                console.error('Error ambil detail SKP Tahunan:', error);
+                showToast('Gagal mengambil detail data', true);
+            }
+        }
+
+        // ============================================================
+        // CRUD API CALLS
+        // ============================================================
+        async function fetchData() {
+            setLoading(true);
+            try {
+                const bulan = currentBulan;
+                const tahun = currentTahun;
+                const nip = document.getElementById('filterNip').value;
+                let url = `${API_BASE}?bulan=${bulan}&tahun=${tahun}`;
+                if (nip) {
+                    url += `&nip=${nip}`;
+                }
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const result = await res.json();
+                if (!result.success) throw new Error(result.message);
+                currentData = result.data || [];
+                renderTable();
+                populateNipDropdown(currentData);
+            } catch (err) {
+                console.error(err);
+                showToast('Gagal memuat data: ' + err.message, true);
+                currentData = [];
+                renderTable();
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function saveDataToAPI(payload, id = null) {
+            setLoading(true);
+            try {
+                let url, method;
+                if (id) {
+                    url = `${API_BASE}/hasil-kerja/${currentBulan}/${currentTahun}/${id}`;
+                    method = 'PUT';
+                } else {
+                    url = `${API_BASE}/hasil-kerja/${currentBulan}/${currentTahun}`;
+                    method = 'POST';
+                }
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                if (!result.success) throw new Error(result.message);
+                showToast(result.message);
+                await fetchData();
+                return true;
+            } catch (err) {
+                showToast(err.message, true);
+                return false;
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function deleteDataFromAPI(id) {
+            if (!confirm('Yakin ingin menghapus data ini?')) return false;
+            setLoading(true);
+            try {
+                const res = await fetch(`${API_BASE}/hasil-kerja/${currentBulan}/${currentTahun}/${id}`, { method: 'DELETE' });
+                const result = await res.json();
+                if (!result.success) throw new Error(result.message);
+                showToast(result.message);
+                await fetchData();
+                return true;
+            } catch (err) {
+                showToast(err.message, true);
+                return false;
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // ============================================================
+        // POPULATE DROPDOWN NIP dari data yang ada
+        // ============================================================
+        function populateNipDropdown(data) {
+            const select = document.getElementById('filterNip');
+            const currentVal = select.value;
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            const nips = [...new Set(data.map(item => item.nip).filter(nip => nip))];
+            nips.sort();
+            nips.forEach(nip => {
+                const option = document.createElement('option');
+                option.value = nip;
+                option.textContent = nip;
+                select.appendChild(option);
+            });
+            if ([...select.options].some(opt => opt.value === currentVal)) {
+                select.value = currentVal;
+            } else {
+                select.value = '';
+            }
+        }
+
+        // ============================================================
+        // RENDER TABLE
+        // ============================================================
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            document.getElementById('periodLabel').innerText = `${BULAN_NAMES[currentBulan]} ${currentTahun}`;
+
+            if (!currentData.length) {
+                tbody.innerHTML = `<tr><td colspan="8" class="empty-state"><i class="fas fa-folder-open icon"></i><br>Tidak ada data. Silakan tambah data baru.</td></tr>`;
+                document.getElementById('statTotal').innerText = '0';
+                document.getElementById('statUtama').innerText = '0';
+                document.getElementById('statTambahan').innerText = '0';
+                return;
+            }
+
+            let total = currentData.length;
+            let utama = currentData.filter(d => d.kategori === 'Utama').length;
+            let tambahan = total - utama;
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statUtama').innerText = utama;
+            document.getElementById('statTambahan').innerText = tambahan;
+
+            let html = '';
+            currentData.forEach((item, idx) => {
+                const targetStr = `${item.target_bulanan?.nilai || ''} ${item.target_bulanan?.satuan || ''}`.trim();
+                const aksiStr = Array.isArray(item.rencana_aksi) ? item.rencana_aksi.join(', ') : (item.rencana_aksi || '');
+                html += `<tr>
+                            <td class="center">${idx+1}</td>
+                            <td>${escapeHtml(item.rencana_hasil_kerja_pimpinan || '')}</td>
+                            <td>${escapeHtml(item.rencana_hasil_kerja || '')}</td>
+                            <td>${escapeHtml(aksiStr)}</td>
+                            <td class="center"><span class="badge-aspek">${escapeHtml(item.aspek || '')}</span></td>
+                            <td>${escapeHtml(item.indikator_kinerja_individu || '')}</td>
+                            <td class="target-val center">${escapeHtml(targetStr)}</td>
+                            <td class="actions">
+                                <button class="btn-edit" onclick="editData('${item.id}')"><i class="fas fa-edit"></i> Edit</button>
+                                <button class="btn-danger" onclick="deleteData('${item.id}')"><i class="fas fa-trash"></i> Hapus</button>
+                            </td>
+                         </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // ============================================================
+        // MODAL
+        // ============================================================
+        async function openModal(editItem = null) {
+            editId = editItem ? editItem.id : null;
+            const modalTitle = document.getElementById('modalTitle');
+
+            // Reset semua field
+            document.getElementById('skpTahunanSelect').value = '';
+            document.getElementById('skpTahunanId').value = '';
+            document.getElementById('fKategori').value = 'Utama';
+            document.getElementById('fAspek').value = '';
+            document.getElementById('fPimpinan').value = '';
+            document.getElementById('fRHK').value = '';
+            document.getElementById('fIndikator').value = '';
+            document.getElementById('fTarget').value = '';
+            document.getElementById('fAksi').value = '';
+            document.getElementById('fOrg').value = 'Organisasi';
+
+            // Aktifkan dropdown SKP Tahunan untuk kedua mode
+            document.getElementById('skpTahunanSelect').disabled = false;
+            document.getElementById('skpTahunanSelect').style.opacity = '1';
+
+            if (editId) {
+                // ===== MODE EDIT =====
+                modalTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Data Hasil Kerja';
+
+                // Isi field dari data yang diedit
+                document.getElementById('fKategori').value = editItem.kategori || 'Utama';
+                document.getElementById('fAspek').value = editItem.aspek || '';
+                document.getElementById('fPimpinan').value = editItem.rencana_hasil_kerja_pimpinan || '';
+                document.getElementById('fRHK').value = editItem.rencana_hasil_kerja || '';
+                document.getElementById('fIndikator').value = editItem.indikator_kinerja_individu || '';
+                const targetVal = `${editItem.target_bulanan?.nilai || ''} ${editItem.target_bulanan?.satuan || ''}`.trim();
+                document.getElementById('fTarget').value = targetVal;
+                const aksiText = Array.isArray(editItem.rencana_aksi) ? editItem.rencana_aksi.join('\n') : (editItem
+                .rencana_aksi || '');
+                document.getElementById('fAksi').value = aksiText;
+                document.getElementById('fOrg').value = editItem.jenis || 'Organisasi';
+
+                // Set hidden field skpTahunanId jika ada
+                if (editItem.skp_tahunan_id) {
+                    document.getElementById('skpTahunanId').value = editItem.skp_tahunan_id;
+                }
+
+                // Load daftar SKP Tahunan lalu set value dropdown sesuai skp_tahunan_id
+                await loadSkpTahunanList();
+                if (editItem.skp_tahunan_id) {
+                    const select = document.getElementById('skpTahunanSelect');
+                    for (let i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value == editItem.skp_tahunan_id) {
+                            select.value = editItem.skp_tahunan_id;
+                            break;
+                        }
+                    }
+                }
+
+                console.log('✏️ Edit data:', editItem);
+
+            } else {
+                // ===== MODE TAMBAH =====
+                modalTitle.innerHTML = '<i class="fas fa-plus"></i> Tambah Data Hasil Kerja';
+                await loadSkpTahunanList();
+                console.log('➕ Mode Tambah data');
+            }
+
+            document.getElementById('modalBackdrop').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('modalBackdrop').classList.remove('open');
+            editId = null;
+            // Aktifkan kembali dropdown (jika dinonaktifkan)
+            document.getElementById('skpTahunanSelect').disabled = false;
+            document.getElementById('skpTahunanSelect').style.opacity = '1';
+        }
+
+        // ============================================================
+        // EDIT DATA - DIPERBAIKI: konversi ID ke string
+        // ============================================================
+        function editData(id) {
+            console.log('🔍 Mencari data dengan ID:', id, ' (type:', typeof id, ')');
+            const item = currentData.find(d => String(d.id) === String(id));
+            if (item) {
+                console.log('✅ Data ditemukan:', item);
+                openModal(item);
+            } else {
+                console.error('❌ Data tidak ditemukan untuk ID:', id);
+                console.log('📋 currentData:', currentData);
+                showToast('Data tidak ditemukan! Periksa console untuk detail.', true);
+            }
+        }
+
+        // ============================================================
+        // SAVE DATA
+        // ============================================================
+        async function saveData() {
+            const kategori = document.getElementById('fKategori').value;
+            const aspek = document.getElementById('fAspek').value.trim();
+            const pimpinan = document.getElementById('fPimpinan').value.trim();
+            const rhk = document.getElementById('fRHK').value.trim();
+            const indikator = document.getElementById('fIndikator').value.trim();
+            const targetRaw = document.getElementById('fTarget').value.trim();
+            const aksiRaw = document.getElementById('fAksi').value;
+            const jenis = document.getElementById('fOrg').value;
+
+            // Validasi field manual
+            if (!indikator) {
+                showToast('Indikator Kinerja Individu wajib diisi!', true);
+                document.getElementById('fIndikator').focus();
+                return;
+            }
+            if (!targetRaw) {
+                showToast('Target Bulanan wajib diisi!', true);
+                document.getElementById('fTarget').focus();
+                return;
+            }
+            if (!aksiRaw || aksiRaw.trim() === '') {
+                showToast('Rencana Aksi wajib diisi!', true);
+                document.getElementById('fAksi').focus();
+                return;
+            }
+
+            // Parsing target
+            let targetNilai = 0,
+                targetSatuan = '';
+            const match = targetRaw.match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
+            if (match) {
+                targetNilai = parseFloat(match[1]);
+                targetSatuan = match[2] || '';
+            } else {
+                targetSatuan = targetRaw;
+            }
+
+            // Rencana aksi menjadi array
+            const aksiLines = aksiRaw.split('\n').map(l => l.trim()).filter(l => l);
+
+            let payload = {};
+
+            if (editId) {
+                // ===== EDIT =====
+                // Ambil skp_tahunan_id dari dropdown (jika ada)
+                const selectedSkpId = document.getElementById('skpTahunanSelect').value;
+                payload = {
+                    kategori: kategori,
+                    jenis: jenis,
+                    rencana_hasil_kerja_pimpinan: pimpinan,
+                    rencana_hasil_kerja: rhk,
+                    rencana_aksi: aksiLines,
+                    aspek: aspek,
+                    indikator_kinerja_individu: indikator,
+                    target_bulanan: { nilai: targetNilai, satuan: targetSatuan }
+                };
+                if (selectedSkpId) {
+                    payload.skp_tahunan_id = parseInt(selectedSkpId);
+                }
+                console.log('📤 Payload EDIT:', payload);
+            } else {
+                // ===== TAMBAH BARU =====
+                const skpTahunanId = document.getElementById('skpTahunanSelect').value;
+                if (!skpTahunanId) {
+                    showToast('Silakan pilih data dari SKP Tahunan terlebih dahulu!', true);
+                    document.getElementById('skpTahunanSelect').focus();
+                    return;
+                }
+                payload = {
+                    skp_tahunan_id: parseInt(skpTahunanId),
+                    rencana_aksi: aksiLines,
+                    jenis: jenis,
+                    indikator_kinerja_individu: indikator,
+                    target_bulanan: { nilai: targetNilai, satuan: targetSatuan }
+                };
+                console.log('📤 Payload TAMBAH:', payload);
+            }
+
+            const success = await saveDataToAPI(payload, editId);
+            if (success) closeModal();
+        }
+
+        // ============================================================
+        // DELETE & FILTER
+        // ============================================================
+        async function deleteData(id) {
+            await deleteDataFromAPI(id);
+        }
+
+        function applyFilter() {
+            currentBulan = parseInt(document.getElementById('filterBulan').value);
+            currentTahun = parseInt(document.getElementById('filterTahun').value);
+            fetchData();
+            // Reload dropdown SKP Tahunan sesuai filter NIP
+            loadSkpTahunanList();
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('filterBulan').value = currentBulan;
+            document.getElementById('filterTahun').value = currentTahun;
+            populateNipDropdown([]);
+            loadSkpTahunanList();
+            fetchData();
+
+            document.getElementById('modalBackdrop').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+        });
+
+        // Ekspos ke global
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.saveData = saveData;
+        window.deleteData = deleteData;
+        window.editData = editData;
+        window.applyFilter = applyFilter;
+        window.isiOtomatisDariSKP = isiOtomatisDariSKP;
+        window.loadSkpTahunanList = loadSkpTahunanList;
+    </script>
+
+</body>
+
+</html>

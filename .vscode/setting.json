@@ -1,0 +1,7 @@
+{
+    "terminal.integrated.env.windows": {
+      "NODE_SKIP_PLATFORM_CHECK": "1",
+      "PATH": "D:\\OK\\Unisba\\Kelas Coding\\node-v18.20.7-win-x64;${env:PATH}"
+    }
+  }
+  

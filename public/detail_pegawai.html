@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detail Pegawai - SIPENA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #1a4fa3; --blue-dark: #163d82; --blue-light: #e8f0fd;
+      --accent: #f59e0b; --danger: #ef4444; --success: #22c55e;
+      --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+      --bg: #f1f5f9; --white: #ffffff; --sidebar-w: 220px;
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar { width: var(--sidebar-w); background: var(--blue); min-height: 100vh; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 100; }
+    .sidebar-brand { padding: 24px 20px 20px; font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar nav { padding: 16px 0; flex: 1; }
+    .sidebar nav a { display: flex; align-items: center; gap: 10px; padding: 11px 20px; color: rgba(255,255,255,0.82); text-decoration: none; font-size: 14px; font-weight: 500; transition: background 0.18s; border-left: 3px solid transparent; }
+    .sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.1); color: #fff; border-left-color: var(--accent); }
+    .sidebar nav a .icon { font-size: 15px; width: 20px; text-align: center; }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; }
+    .topbar { background: var(--white); padding: 14px 28px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+    .topbar h1 { font-size: 17px; font-weight: 700; }
+    .topbar .breadcrumb { font-size: 13px; color: var(--muted); }
+    .topbar .breadcrumb a { color: var(--blue); text-decoration: none; }
+
+    .content { padding: 28px; flex: 1; }
+
+    /* PROFILE HEADER */
+    .profile-header {
+      background: linear-gradient(135deg, var(--blue) 0%, #2563eb 100%);
+      border-radius: 12px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+    }
+    .avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: 3px solid rgba(255,255,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-info h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .profile-info .jabatan-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .profile-meta { display: flex; gap: 20px; flex-wrap: wrap; }
+    .profile-meta span { font-size: 13px; opacity: 0.85; }
+    .profile-meta i { margin-right: 5px; }
+
+    .status-badge-aktif { background: #22c55e; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .status-badge-nonaktif { background: #ef4444; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+    /* TABS */
+    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--white); border-radius: 10px; padding: 6px; border: 1px solid var(--border); width: fit-content; }
+    .tab-btn { padding: 8px 20px; border-radius: 7px; border: none; background: transparent; font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 7px; }
+    .tab-btn.active { background: var(--blue); color: #fff; }
+    .tab-btn:hover:not(.active) { background: var(--bg); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeUp 0.3s ease; }
+
+    /* CARDS */
+    .card { background: var(--white); border-radius: 10px; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
+    .card-title { padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 700; color: var(--blue); display: flex; align-items: center; gap: 8px; }
+    .card-body { padding: 20px; }
+
+    /* DATA GRID */
+    .data-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .data-item label { font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 4px; }
+    .data-item span { font-size: 14px; color: var(--text); font-weight: 500; }
+    .data-item.full { grid-column: 1 / -1; }
+
+    /* SK TABLE */
+    .sk-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .sk-table th { background: #f8fafc; padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    .sk-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .sk-table tr:last-child td { border-bottom: none; }
+    .sk-table tr:hover td { background: #f8fafc; }
+
+    .sk-type { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; }
+    .sk-pengangkatan { background: #dbeafe; color: #1d4ed8; }
+    .sk-mutasi { background: #fef3c7; color: #92400e; }
+    .sk-pensiun { background: #fee2e2; color: #991b1b; }
+    .sk-kenaikan { background: #dcfce7; color: #166534; }
+
+    /* RIWAYAT */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px; width: 2px; background: var(--border); }
+    .timeline-item { position: relative; margin-bottom: 20px; }
+    .timeline-item::before { content: ''; position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); border: 2px solid #fff; box-shadow: 0 0 0 2px var(--blue); }
+    .timeline-date { font-size: 11.5px; color: var(--muted); margin-bottom: 3px; }
+    .timeline-title { font-size: 14px; font-weight: 600; }
+    .timeline-sub { font-size: 13px; color: var(--muted); }
+
+    /* FORM TAMBAH SK */
+    .btn { padding: 8px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; border: none; transition: all 0.18s; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-danger { background: var(--danger); color: #fff; font-size: 12px; padding: 5px 10px; }
+    .btn-danger:hover { opacity: 0.85; }
+    .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+
+    .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; font-size: 13.5px; font-family: inherit; outline: none; transition: border 0.2s; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--blue); }
+    .form-group.full { grid-column: 1 / -1; }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal { background: var(--white); border-radius: 14px; width: 100%; max-width: 520px; padding: 28px; transform: translateY(20px); transition: transform 0.25s; box-shadow: 0 20px 60px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+    .modal-overlay.active .modal { transform: translateY(0); }
+    .modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--blue); }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13.5px; font-weight: 500; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+
+    .loading { text-align: center; padding: 60px; color: var(--muted); font-size: 15px; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">SIPENA</div>
+  <nav>
+    <a href="index.html"><span class="icon"><i class="fa fa-home"></i></span> Dashboard</a>
+    <a href="pegawai.html" class="active"><span class="icon"><i class="fa fa-users"></i></span> Data Pegawai</a>
+    <a href="struktur.html"><span class="icon"><i class="fa fa-sitemap"></i></span> Struktur Organisasi</a>
+    <a href="tupoksi.html"><span class="icon"><i class="fa fa-clipboard-list"></i></span> Tupoksi</a>
+    <a href="login.html"><span class="icon"><i class="fa fa-sign-out-alt"></i></span> Logout</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <h1><i class="fa fa-user" style="color:var(--blue);margin-right:8px;"></i>Detail Pegawai</h1>
+    <span class="breadcrumb"><a href="pegawai.html">Data Pegawai</a> / Detail</span>
+  </div>
+
+  <div class="content" id="mainContent">
+    <div class="loading"><i class="fa fa-spinner fa-spin"></i> Memuat data...</div>
+  </div>
+</div>
+
+<!-- MODAL TAMBAH SK -->
+<div class="modal-overlay" id="modalSK">
+  <div class="modal">
+    <h3><i class="fa fa-file-alt"></i> Tambah SK</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nomor SK</label>
+        <input type="text" id="skNomor" placeholder="Contoh: 821/001/2024"/>
+      </div>
+      <div class="form-group">
+        <label>Jenis SK</label>
+        <select id="skJenis">
+          <option value="pengangkatan">Pengangkatan</option>
+          <option value="mutasi">Mutasi/Pindah</option>
+          <option value="kenaikan">Kenaikan Pangkat</option>
+          <option value="pensiun">Pensiun</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tanggal SK</label>
+        <input type="date" id="skTanggal"/>
+      </div>
+      <div class="form-group">
+        <label>Pejabat Penandatangan</label>
+        <input type="text" id="skPejabat" placeholder="Nama pejabat..."/>
+      </div>
+      <div class="form-group full">
+        <label>Keterangan</label>
+        <input type="text" id="skKeterangan" placeholder="Isi/keterangan SK..."/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeSKModal()">Batal</button>
+      <button class="btn btn-primary" onclick="simpanSK()"><i class="fa fa-save"></i> Simpan SK</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TAMBAH RIWAYAT -->
+<div class="modal-overlay" id="modalRiwayat">
+  <div class="modal">
+    <h3><i class="fa fa-history"></i> Tambah Riwayat Jabatan</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Jabatan</label>
+        <input type="text" id="rJabatan" placeholder="Nama jabatan..."/>
+      </div>
+      <div class="form-group">
+        <label>Unit Kerja</label>
+        <input type="text" id="rUnit" placeholder="Unit/instansi..."/>
+      </div>
+      <div class="form-group">
+        <label>Tahun Mulai</label>
+        <input type="number" id="rMulai" placeholder="2020"/>
+      </div>
+      <div class="form-group">
+        <label>Tahun Selesai</label>
+        <input type="text" id="rSelesai" placeholder="2023 atau Sekarang"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeRiwayatModal()">Batal</button>
+      <button class="btn btn-primary" onclick="simpanRiwayat()"><i class="fa fa-save"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT DATA DIRI -->
+<div class="modal-overlay" id="modalDataDiri">
+  <div class="modal">
+    <h3><i class="fa fa-user-circle"></i> Edit Informasi Pribadi</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" id="dNama" placeholder="Nama lengkap"/>
+      </div>
+      <div class="form-group">
+        <label>NIP</label>
+        <input type="text" id="dNip" placeholder="NIP"/>
+      </div>
+      <div class="form-group">
+        <label>Tempat Lahir</label>
+        <input type="text" id="dTempatLahir" placeholder="Kota tempat lahir"/>
+      </div>
+      <div class="form-group">
+        <label>Tanggal Lahir</label>
+        <input type="date" id="dTanggalLahir"/>
+      </div>
+      <div class="form-group">
+        <label>Jenis Kelamin</label>
+        <select id="dJK">
+          <option value="">-- Pilih --</option>
+          <option value="Laki-laki">Laki-laki</option>
+          <option value="Perempuan">Perempuan</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Agama</label>
+        <select id="dAgama">
+          <option value="">-- Pilih --</option>
+          <option value="Islam">Islam</option>
+          <option value="Kristen">Kristen</option>
+          <option value="Katolik">Katolik</option>
+          <option value="Hindu">Hindu</option>
+          <option value="Buddha">Buddha</option>
+          <option value="Konghucu">Konghucu</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Pendidikan Terakhir</label>
+        <select id="dPendidikan">
+          <option value="">-- Pilih --</option>
+          <option value="SMA/SMK">SMA/SMK</option>
+          <option value="D3">D3</option>
+          <option value="S1">S1</option>
+          <option value="S2">S2</option>
+          <option value="S3">S3</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>No. HP</label>
+        <input type="text" id="dHP" placeholder="08xxxxxxxxxx"/>
+      </div>
+      <div class="form-group full">
+        <label>Alamat</label>
+        <input type="text" id="dAlamat" placeholder="Alamat lengkap..."/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeDataDiriModal()">Batal</button>
+      <button class="btn btn-primary" onclick="simpanDataDiri()"><i class="fa fa-save"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT KEPEGAWAIAN -->
+<div class="modal-overlay" id="modalKepegawaian">
+  <div class="modal">
+    <h3><i class="fa fa-briefcase"></i> Edit Informasi Kepegawaian</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Jabatan</label>
+        <input type="text" id="kJabatan" placeholder="Nama jabatan..."/>
+      </div>
+      <div class="form-group">
+        <label>Unit Kerja</label>
+        <input type="text" id="kUnit" placeholder="Unit kerja..."/>
+      </div>
+      <div class="form-group">
+        <label>Golongan / Pangkat</label>
+        <select id="kGolongan">
+          <option value="">-- Pilih --</option>
+          <option value="I/a">I/a</option><option value="I/b">I/b</option><option value="I/c">I/c</option><option value="I/d">I/d</option>
+          <option value="II/a">II/a</option><option value="II/b">II/b</option><option value="II/c">II/c</option><option value="II/d">II/d</option>
+          <option value="III/a">III/a</option><option value="III/b">III/b</option><option value="III/c">III/c</option><option value="III/d">III/d</option>
+          <option value="IV/a">IV/a</option><option value="IV/b">IV/b</option><option value="IV/c">IV/c</option><option value="IV/d">IV/d</option><option value="IV/e">IV/e</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>TMT Jabatan</label>
+        <input type="date" id="kTMT"/>
+      </div>
+      <div class="form-group">
+        <label>Masa Kerja</label>
+        <input type="text" id="kMasaKerja" placeholder="Contoh: 20 Tahun 3 Bulan"/>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="kStatus">
+          <option value="aktif">Aktif</option>
+          <option value="nonaktif">Non-Aktif</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeKepegawaianModal()">Batal</button>
+      <button class="btn btn-primary" onclick="simpanKepegawaian()"><i class="fa fa-save"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const API = 'http://localhost:3000/pegawai';
+  const params = new URLSearchParams(window.location.search);
+  const pegawaiId = params.get('id');
+  let pegawai = null;
+
+  // ─── LOAD DATA ───────────────────────────────────────────
+  async function loadDetail() {
+    try {
+      const res = await fetch(`${API}/${pegawaiId}`);
+      pegawai = await res.json();
+    } catch {
+      // fallback localStorage
+      const all = JSON.parse(localStorage.getItem('pegawai') || '[]');
+      pegawai = all.find(p => String(p.id) === String(pegawaiId));
+    }
+
+    if (!pegawai) {
+      document.getElementById('mainContent').innerHTML = `
+        <div class="loading"><i class="fa fa-exclamation-circle"></i> Data pegawai tidak ditemukan.<br>
+        <a href="pegawai.html" style="color:var(--blue);">Kembali ke daftar</a></div>`;
+      return;
+    }
+
+    // inisialisasi field kosong
+    if (!pegawai.sk) pegawai.sk = [];
+    if (!pegawai.riwayat_jabatan) pegawai.riwayat_jabatan = [];
+
+    renderPage();
+  }
+
+  // ─── RENDER HALAMAN ──────────────────────────────────────
+  function renderPage() {
+    document.getElementById('mainContent').innerHTML = `
+      <!-- PROFILE HEADER -->
+      <div class="profile-header">
+        <div class="avatar">
+          ${pegawai.foto ? `<img src="${pegawai.foto}" alt="foto"/>` : `<i class="fa fa-user"></i>`}
+        </div>
+        <div class="profile-info">
+          <h2>${pegawai.nama}</h2>
+          <div class="jabatan-badge">${pegawai.jabatan || '-'}</div>
+          <div class="profile-meta">
+            <span><i class="fa fa-id-card"></i> NIP: ${pegawai.nip}</span>
+            <span><i class="fa fa-building"></i> ${pegawai.unit_kerja || '-'}</span>
+            <span><span class="status-badge-${pegawai.status}">${pegawai.status === 'aktif' ? 'Aktif' : 'Non-Aktif'}</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('dataDiri')"><i class="fa fa-id-badge"></i> Data Diri</button>
+        <button class="tab-btn" onclick="switchTab('sk')"><i class="fa fa-file-alt"></i> SK Pegawai</button>
+        <button class="tab-btn" onclick="switchTab('riwayat')"><i class="fa fa-history"></i> Riwayat Jabatan</button>
+      </div>
+
+      <!-- TAB: DATA DIRI -->
+      <div class="tab-content active" id="tab-dataDiri">
+        <div class="card">
+          <div class="card-title" style="justify-content:space-between;">
+            <span><i class="fa fa-user-circle"></i> Informasi Pribadi</span>
+            <button class="btn btn-primary" style="font-size:12px;padding:5px 12px;" onclick="openDataDiriModal()">
+              <i class="fa fa-edit"></i> Edit Data Diri
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="data-grid">
+              <div class="data-item">
+                <label>Nama Lengkap</label>
+                <span>${pegawai.nama}</span>
+              </div>
+              <div class="data-item">
+                <label>NIP</label>
+                <span>${pegawai.nip}</span>
+              </div>
+              <div class="data-item">
+                <label>Tempat Lahir</label>
+                <span>${pegawai.tempat_lahir || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>Tanggal Lahir</label>
+                <span>${pegawai.tanggal_lahir || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>Jenis Kelamin</label>
+                <span>${pegawai.jenis_kelamin || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>Agama</label>
+                <span>${pegawai.agama || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>Pendidikan Terakhir</label>
+                <span>${pegawai.pendidikan || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>No. HP</label>
+                <span>${pegawai.no_hp || '-'}</span>
+              </div>
+              <div class="data-item full">
+                <label>Alamat</label>
+                <span>${pegawai.alamat || '-'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="justify-content:space-between;">
+            <span><i class="fa fa-briefcase"></i> Informasi Kepegawaian</span>
+            <button class="btn btn-primary" style="font-size:12px;padding:5px 12px;" onclick="openKepegawaianModal()">
+              <i class="fa fa-edit"></i> Edit Kepegawaian
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="data-grid">
+              <div class="data-item">
+                <label>Jabatan</label>
+                <span>${pegawai.jabatan || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>Unit Kerja</label>
+                <span>${pegawai.unit_kerja || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>Golongan / Pangkat</label>
+                <span>${pegawai.golongan || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>TMT Jabatan</label>
+                <span>${pegawai.tmt_jabatan || '-'}</span>
+              </div>
+              <div class="data-item">
+                <label>Status Pegawai</label>
+                <span><span class="status-badge-${pegawai.status}">${pegawai.status === 'aktif' ? 'Aktif' : 'Non-Aktif'}</span></span>
+              </div>
+              <div class="data-item">
+                <label>Masa Kerja</label>
+                <span>${pegawai.masa_kerja || '-'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: SK -->
+      <div class="tab-content" id="tab-sk">
+        <div class="card">
+          <div class="card-title" style="justify-content:space-between;">
+            <span><i class="fa fa-file-alt"></i> Daftar SK Pegawai</span>
+            <button class="btn btn-primary" style="font-size:12px;padding:5px 12px;" onclick="openSKModal()">
+              <i class="fa fa-plus"></i> Tambah SK
+            </button>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <table class="sk-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nomor SK</th>
+                  <th>Jenis</th>
+                  <th>Tanggal</th>
+                  <th>Keterangan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="skTableBody">
+                ${renderSKRows()}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: RIWAYAT -->
+      <div class="tab-content" id="tab-riwayat">
+        <div class="card">
+          <div class="card-title" style="justify-content:space-between;">
+            <span><i class="fa fa-history"></i> Riwayat Jabatan</span>
+            <button class="btn btn-primary" style="font-size:12px;padding:5px 12px;" onclick="openRiwayatModal()">
+              <i class="fa fa-plus"></i> Tambah Riwayat
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="timeline" id="riwayatContainer">
+              ${renderRiwayat()}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ─── DATA DIRI ────────────────────────────────────────────
+  function openDataDiriModal() {
+    document.getElementById('dNama').value = pegawai.nama || '';
+    document.getElementById('dNip').value = pegawai.nip || '';
+    document.getElementById('dTempatLahir').value = pegawai.tempat_lahir || '';
+    document.getElementById('dTanggalLahir').value = pegawai.tanggal_lahir || '';
+    document.getElementById('dJK').value = pegawai.jenis_kelamin || '';
+    document.getElementById('dAgama').value = pegawai.agama || '';
+    document.getElementById('dPendidikan').value = pegawai.pendidikan || '';
+    document.getElementById('dHP').value = pegawai.no_hp || '';
+    document.getElementById('dAlamat').value = pegawai.alamat || '';
+    document.getElementById('modalDataDiri').classList.add('active');
+  }
+  function closeDataDiriModal() { document.getElementById('modalDataDiri').classList.remove('active'); }
+
+  function simpanDataDiri() {
+    pegawai.nama = document.getElementById('dNama').value.trim();
+    pegawai.nip = document.getElementById('dNip').value.trim();
+    pegawai.tempat_lahir = document.getElementById('dTempatLahir').value.trim();
+    pegawai.tanggal_lahir = document.getElementById('dTanggalLahir').value;
+    pegawai.jenis_kelamin = document.getElementById('dJK').value;
+    pegawai.agama = document.getElementById('dAgama').value;
+    pegawai.pendidikan = document.getElementById('dPendidikan').value;
+    pegawai.no_hp = document.getElementById('dHP').value.trim();
+    pegawai.alamat = document.getElementById('dAlamat').value.trim();
+    simpanKeStorage();
+    closeDataDiriModal();
+    renderPage();
+    showToast('Data diri berhasil disimpan!', 'success');
+  }
+
+  // ─── KEPEGAWAIAN ──────────────────────────────────────────
+  function openKepegawaianModal() {
+    document.getElementById('kJabatan').value = pegawai.jabatan || '';
+    document.getElementById('kUnit').value = pegawai.unit_kerja || '';
+    document.getElementById('kGolongan').value = pegawai.golongan || '';
+    document.getElementById('kTMT').value = pegawai.tmt_jabatan || '';
+    document.getElementById('kMasaKerja').value = pegawai.masa_kerja || '';
+    document.getElementById('kStatus').value = pegawai.status || 'aktif';
+    document.getElementById('modalKepegawaian').classList.add('active');
+  }
+  function closeKepegawaianModal() { document.getElementById('modalKepegawaian').classList.remove('active'); }
+
+  function simpanKepegawaian() {
+    pegawai.jabatan = document.getElementById('kJabatan').value.trim();
+    pegawai.unit_kerja = document.getElementById('kUnit').value.trim();
+    pegawai.golongan = document.getElementById('kGolongan').value;
+    pegawai.tmt_jabatan = document.getElementById('kTMT').value;
+    pegawai.masa_kerja = document.getElementById('kMasaKerja').value.trim();
+    pegawai.status = document.getElementById('kStatus').value;
+    simpanKeStorage();
+    closeKepegawaianModal();
+    renderPage();
+    showToast('Data kepegawaian berhasil disimpan!', 'success');
+  }
+
+  // ─── SK ──────────────────────────────────────────────────
+  function renderSKRows() {
+    if (!pegawai.sk || pegawai.sk.length === 0)
+      return `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted);">Belum ada SK</td></tr>`;
+    return pegawai.sk.map((s, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${s.nomor}</strong></td>
+        <td><span class="sk-type sk-${s.jenis}">${s.jenis}</span></td>
+        <td>${s.tanggal}</td>
+        <td>${s.keterangan}</td>
+        <td><button class="btn btn-danger" onclick="hapusSK(${i})"><i class="fa fa-trash"></i></button></td>
+      </tr>
+    `).join('');
+  }
+
+  function openSKModal() { document.getElementById('modalSK').classList.add('active'); }
+  function closeSKModal() { document.getElementById('modalSK').classList.remove('active'); }
+
+  function simpanSK() {
+    const sk = {
+      nomor: document.getElementById('skNomor').value.trim(),
+      jenis: document.getElementById('skJenis').value,
+      tanggal: document.getElementById('skTanggal').value,
+      pejabat: document.getElementById('skPejabat').value.trim(),
+      keterangan: document.getElementById('skKeterangan').value.trim()
+    };
+    if (!sk.nomor || !sk.tanggal) { showToast('Nomor dan tanggal SK wajib diisi!', 'error'); return; }
+    pegawai.sk.push(sk);
+    simpanKeStorage();
+    document.getElementById('skTableBody').innerHTML = renderSKRows();
+    closeSKModal();
+    showToast('SK berhasil ditambahkan!', 'success');
+  }
+
+  function hapusSK(idx) {
+    if (!confirm('Hapus SK ini?')) return;
+    pegawai.sk.splice(idx, 1);
+    simpanKeStorage();
+    document.getElementById('skTableBody').innerHTML = renderSKRows();
+    showToast('SK dihapus!', 'error');
+  }
+
+  // ─── RIWAYAT ─────────────────────────────────────────────
+  function renderRiwayat() {
+    if (!pegawai.riwayat_jabatan || pegawai.riwayat_jabatan.length === 0)
+      return `<p style="color:var(--muted);font-size:14px;">Belum ada riwayat jabatan.</p>`;
+    return pegawai.riwayat_jabatan.map((r, i) => `
+      <div class="timeline-item">
+        <div class="timeline-date">${r.mulai} - ${r.selesai}</div>
+        <div class="timeline-title">${r.jabatan}</div>
+        <div class="timeline-sub">${r.unit}</div>
+      </div>
+    `).join('');
+  }
+
+  function openRiwayatModal() { document.getElementById('modalRiwayat').classList.add('active'); }
+  function closeRiwayatModal() { document.getElementById('modalRiwayat').classList.remove('active'); }
+
+  function simpanRiwayat() {
+    const r = {
+      jabatan: document.getElementById('rJabatan').value.trim(),
+      unit: document.getElementById('rUnit').value.trim(),
+      mulai: document.getElementById('rMulai').value.trim(),
+      selesai: document.getElementById('rSelesai').value.trim() || 'Sekarang'
+    };
+    if (!r.jabatan) { showToast('Jabatan wajib diisi!', 'error'); return; }
+    pegawai.riwayat_jabatan.unshift(r);
+    simpanKeStorage();
+    document.getElementById('riwayatContainer').innerHTML = renderRiwayat();
+    closeRiwayatModal();
+    showToast('Riwayat berhasil ditambahkan!', 'success');
+  }
+
+  // ─── STORAGE ─────────────────────────────────────────────
+  function simpanKeStorage() {
+    const all = JSON.parse(localStorage.getItem('pegawai') || '[]');
+    const idx = all.findIndex(p => String(p.id) === String(pegawaiId));
+    if (idx >= 0) all[idx] = pegawai;
+    localStorage.setItem('pegawai', JSON.stringify(all));
+
+    // coba sync ke API
+    fetch(`${API}/${pegawaiId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pegawai)
+    }).catch(() => {});
+  }
+
+  // ─── TABS ─────────────────────────────────────────────────
+  function switchTab(name) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // ─── TOAST ────────────────────────────────────────────────
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.className = 'toast', 3000);
+  }
+
+  // close modal on overlay click
+  ['modalSK','modalRiwayat','modalDataDiri','modalKepegawaian'].forEach(id => {
+    document.getElementById(id).addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('active');
+    });
+  });
+
+  loadDetail();
+</script>
+</body>
+</html>
