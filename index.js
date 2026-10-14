@@ -85,5 +85,12 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+// ============================================================
+// 7. HANDLE /index.html FALLBACK
+// ============================================================
+app.get('/index.html', (req, res) => {
+  res.redirect('/auth/login');
+});
+
 // WAJIB UNTUK VERCEL:
 module.exports = app;
