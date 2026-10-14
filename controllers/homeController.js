@@ -1,6 +1,6 @@
 exports.index = async (req, res) => {
     try {
-        res.send('Halaman Utama dari Controller');
+        res.redirect('/auth');
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
