@@ -2,7 +2,6 @@
 const express = require('express');
 const session = require('express-session');
 const app = express();
-// const port = 3000;
 const port = process.env.PORT || 3000;
 
 // ============================================================
@@ -23,7 +22,7 @@ sequelize.authenticate()
 // 2. SESSION (harus sebelum middleware & routes)
 // ============================================================
 app.use(session({
-  secret: 'sipena_secret',
+  secret: process.env.SESSION_SECRET || 'sipena_secret',
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 hari
@@ -71,8 +70,13 @@ app.use('/skp_periodik', skp_periodikRoutes);
 app.use('/penilaian', penilaianRoutes);
 
 // ============================================================
-// 6. START SERVER
+// 6. START SERVER (Khusus mode Lokal)
 // ============================================================
-app.listen(port, () => {
-  console.log(`✅ Server running at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`✅ Server running at http://localhost:${port}`);
+  });
+}
+
+// WAJIB UNTUK VERCEL:
+module.exports = app;

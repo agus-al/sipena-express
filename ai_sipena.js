@@ -1,5 +1,5 @@
 const Groq = require('groq-sdk');
-const groq = new Groq({ apiKey: apiKey: process.env.GROQ_API_KEY });
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 /**
  * Fungsi untuk memproses TUPOKSI menjadi JSON mentah (String)

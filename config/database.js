@@ -1,10 +1,21 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('sipena', 'root', '', {
-  host: '127.0.0.1',
-  dialect: 'mysql',
-  port: 3306,
-  logging: false,
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME || 'sipena',
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 4000,
+    dialect: 'mysql',
+    logging: false,
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: true
+      }
+    }
+  }
+);
 
 module.exports = sequelize;
+
