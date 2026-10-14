@@ -1,4 +1,5 @@
 const { Sequelize } = require('sequelize');
+const mysql2 = require('mysql2'); // 1. Tambahkan ini
 
 const sequelize = new Sequelize(
   process.env.DB_NAME || 'sipena',
@@ -8,6 +9,7 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT || 4000,
     dialect: 'mysql',
+    dialectModule: mysql2, // 2. TAMBAHKAN BARIS INI (Wajib untuk Vercel!)
     logging: false,
     dialectOptions: {
       ssl: {
@@ -18,4 +20,5 @@ const sequelize = new Sequelize(
 );
 
 module.exports = sequelize;
+
 
