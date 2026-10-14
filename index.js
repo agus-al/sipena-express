@@ -21,11 +21,18 @@ sequelize.authenticate()
 // ============================================================
 // 2. SESSION (harus sebelum middleware & routes)
 // ============================================================
+// Wajib untuk Vercel agar membaca protokol HTTPS di balik proxy
+app.set('trust proxy', 1);
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'sipena_secret',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 hari
+  cookie: { 
+    maxAge: 24 * 60 * 60 * 1000, // 1 hari
+    secure: process.env.NODE_ENV === 'production', // True jika di Vercel (HTTPS)
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  }
 }));
 
 // ============================================================
