@@ -40,31 +40,23 @@ exports.login = async (req, res) => {
             return res.status(401).json({ success: false, message: 'Password salah!' });
         }
 
-        // Simpan session
+        // Simpan data user ke cookie-session (otomatis terenkripsi di browser)
         req.session.user = {
             id: user.id,
             nip: user.nip,
             role: user.role
         };
 
-        // Wajib untuk Vercel Serverless: Simpan session secara aman sebelum merespon
-        req.session.save((err) => {
-            if (err) {
-                console.error('Gagal menyimpan session:', err);
-                return res.status(500).json({ success: false, message: 'Gagal memproses session' });
-            }
+        // Tentukan tujuan redirect berdasarkan role
+        let redirectUrl = '/index.html'; // Default ke dashboard utama
+        if (user.role === 'admin') {
+            redirectUrl = '/admin.html';
+        } else if (user.role === 'developer') {
+            redirectUrl = '/dev.html';
+        }
 
-            // Tentukan tujuan redirect berdasarkan role
-            let redirectUrl = '/index.html'; // Default ke dashboard utama
-            if (user.role === 'admin') {
-                redirectUrl = '/admin.html';
-            } else if (user.role === 'developer') {
-                redirectUrl = '/dev.html';
-            }
-
-            // Kirim respon sukses beserta URL tujuannya ke frontend
-            return res.json({ success: true, redirectUrl });
-        });
+        // Kirim respon sukses beserta URL tujuannya ke frontend
+        return res.json({ success: true, redirectUrl });
 
     } catch (err) {
         console.error('Error login:', err);
@@ -76,7 +68,7 @@ exports.login = async (req, res) => {
 // LOGOUT
 // ============================
 exports.logout = (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/auth/login');
-    });
+    // Menghapus cookie-session dengan set ke null
+    req.session = null;
+    return res.redirect('/auth/login');
 };

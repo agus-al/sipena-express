@@ -1,6 +1,6 @@
 // index.js
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session'); // Menggantikan express-session agar aman di Vercel
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -19,20 +19,18 @@ sequelize.authenticate()
   });
 
 // ============================================================
-// 2. SESSION (harus sebelum middleware & routes)
+// 2. SESSION (cookie-session untuk Vercel Serverless)
 // ============================================================
 // Wajib untuk Vercel agar membaca protokol HTTPS di balik proxy
 app.set('trust proxy', 1);
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'sipena_secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { 
-    maxAge: 24 * 60 * 60 * 1000, // 1 hari
-    secure: process.env.NODE_ENV === 'production', // True jika di Vercel (HTTPS)
-    sameSite: 'lax' // Diubah ke 'lax' agar cookie tersimpan dengan aman saat redirect di Vercel
-  }
+app.use(cookieSession({
+  name: 'sipena_session',
+  keys: [process.env.SESSION_SECRET || 'sipena_secret_key'],
+  maxAge: 24 * 60 * 60 * 1000, // 1 hari
+  secure: process.env.NODE_ENV === 'production', // True jika di Vercel (HTTPS)
+  sameSite: 'lax',
+  httpOnly: true
 }));
 
 // ============================================================
