@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const mysql2 = require('mysql2'); // 1. Tambahkan ini
+const mysql2 = require('mysql2'); // Wajib untuk Vercel / serverless
 
 const sequelize = new Sequelize(
   process.env.DB_NAME || 'sipena',
@@ -9,16 +9,17 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     port: process.env.DB_PORT || 4000,
     dialect: 'mysql',
-    dialectModule: mysql2, // 2. TAMBAHKAN BARIS INI (Wajib untuk Vercel!)
+    dialectModule: mysql2, // Mencegah error modul mysql di lingkungan serverless Vercel
     logging: false,
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false // Membuka izin koneksi SSL ke TiDB Cloud
       }
     }
   }
 );
 
 module.exports = sequelize;
+
 
 
