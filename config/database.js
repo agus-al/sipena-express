@@ -14,21 +14,17 @@ const sequelize = new Sequelize(
       ssl: {
         rejectUnauthorized: false
       },
-      // Timeout koneksi cepat agar tidak menggantung lama
-      connectTimeout: 10000 
+      connectTimeout: 10000 // Timeout 10 detik agar cepat merespon
     },
-    // SANGAT PENTING UNTUK VERCEL SERVERLESS:
+    // PENTING: Pengaturan pool untuk Vercel Serverless
     pool: {
-      max: 2,         // Cukup 1-2 koneksi saja untuk serverless
-      min: 0,         // Biarkan 0 agar koneksi idle dibuang
-      acquire: 30000, // Waktu maksimal mengambil koneksi (ms)
-      idle: 5000      // Putus koneksi yang menganggur setelah 5 detik
+      max: 2,
+      min: 0,
+      acquire: 30000,
+      idle: 5000
     },
     logging: false
   }
 );
 
 module.exports = sequelize;
-
-
-
