@@ -98,42 +98,44 @@
       <!-- Pesan error -->
       <div id="errorMsg" class="alert alert-danger d-none">
         <i class="bi bi-exclamation-circle me-2"></i>
-        NIP atau Password salah!
+        <span id="errorText">NIP atau Password salah!</span>
       </div>
 
-      <!-- Form -->
-      <div class="mb-3">
-        <label class="form-label fw-semibold text-muted" style="font-size:13px;">
-          Nomor Induk Pegawai (NIP)
-        </label>
-        <div class="input-group">
-          <span class="input-group-text">
-            <i class="bi bi-person-badge"></i>
-          </span>
-          <input type="text" id="nip" class="form-control"
-            placeholder="Masukkan NIP" required autocomplete="off">
+      <!-- Form menggunakan onSubmit agar tombol dan enter berfungsi otomatis -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-muted" style="font-size:13px;">
+            Nomor Induk Pegawai (NIP)
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-person-badge"></i>
+            </span>
+            <input type="text" id="nip" class="form-control"
+              placeholder="Masukkan NIP" required autocomplete="off">
+          </div>
         </div>
-      </div>
 
-      <div class="mb-4">
-        <label class="form-label fw-semibold text-muted" style="font-size:13px;">
-          Password
-        </label>
-        <div class="input-group">
-          <span class="input-group-text">
-            <i class="bi bi-lock"></i>
-          </span>
-          <input type="password" id="password" class="form-control"
-            placeholder="Masukkan Password" required>
-          <span class="input-group-text" style="cursor:pointer" onclick="togglePassword()">
-            <i class="bi bi-eye" id="eyeIcon"></i>
-          </span>
+        <div class="mb-4">
+          <label class="form-label fw-semibold text-muted" style="font-size:13px;">
+            Password
+          </label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-lock"></i>
+            </span>
+            <input type="password" id="password" class="form-control"
+              placeholder="Masukkan Password" required>
+            <span class="input-group-text" style="cursor:pointer" onclick="togglePassword()">
+              <i class="bi bi-eye" id="eyeIcon"></i>
+            </span>
+          </div>
         </div>
-      </div>
 
-      <button class="btn btn-login" onclick="doLogin()">
-        <i class="bi bi-box-arrow-in-right me-2"></i>MASUK
-      </button>
+        <button type="submit" class="btn btn-login">
+          <i class="bi bi-box-arrow-in-right me-2"></i>MASUK
+        </button>
+      </form>
 
       <p class="text-center text-muted mt-3" style="font-size:12px;">
         © 2026 SIPENA - Sistem Kepegawaian
@@ -156,10 +158,17 @@
       }
     }
 
-    // Login pakai fetch ke Node.js
-    async function doLogin() {
-      const nip = document.getElementById('nip').value;
+    // Fungsi handle login saat form disubmit
+    async function handleLogin(event) {
+      event.preventDefault(); // Mencegah reload halaman default
+
+      const nip = document.getElementById('nip').value.trim();
       const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('errorMsg');
+      const errorText = document.getElementById('errorText');
+
+      // Sembunyikan pesan error sebelumnya
+      errorMsg.classList.add('d-none');
 
       try {
         const response = await fetch('/auth/login', {
@@ -171,20 +180,19 @@
         const data = await response.json();
 
         if (response.ok && data.success) {
+          // Berhasil, pindah ke halaman tujuan
           window.location.href = data.redirectUrl;
         } else {
-          document.getElementById('errorMsg').classList.remove('d-none');
+          // Gagal, tampilkan pesan dari server
+          errorText.textContent = data.message || 'NIP atau Password salah!';
+          errorMsg.classList.remove('d-none');
         }
       } catch (err) {
         console.error('Error:', err);
-        document.getElementById('errorMsg').classList.remove('d-none');
+        errorText.textContent = 'Terjadi kesalahan pada koneksi server.';
+        errorMsg.classList.remove('d-none');
       }
     }
-
-    // Enter key untuk login
-    document.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') doLogin();
-    });
   </script>
 </body>
 </html>
