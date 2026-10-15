@@ -1,5 +1,6 @@
 // index.js
 const express = require('express');
+const path = require('path');
 const cookieSession = require('cookie-session'); // Menggantikan express-session agar aman di Vercel
 const app = express();
 const port = process.env.PORT || 3000;
@@ -38,7 +39,7 @@ app.use(cookieSession({
 // ============================================================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ============================================================
 // 4. ROUTE /session (untuk frontend)
@@ -82,13 +83,6 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`✅ Server running at http://localhost:${port}`);
   });
 }
-
-// ============================================================
-// 7. HANDLE /index.html FALLBACK
-// ============================================================
-app.get('/index.html', (req, res) => {
-  res.redirect('/auth/login');
-});
 
 // WAJIB UNTUK VERCEL:
 module.exports = app;
