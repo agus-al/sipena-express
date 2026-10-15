@@ -10,16 +10,16 @@ exports.register = async (req, res) => {
 
         const existing = await User.findByNip(nip);
         if (existing) {
-            return res.send('NIP sudah dipakai!');
+            return res.status(400).json({ success: false, message: 'NIP sudah dipakai!' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({ nip, password: hashedPassword });
 
-        res.redirect('/auth/login');
+        return res.json({ success: true, message: 'Registrasi berhasil' });
     } catch (err) {
         console.error('Error register:', err);
-        res.status(500).send('Gagal register: ' + err.message);
+        return res.status(500).json({ success: false, message: 'Gagal register: ' + err.message });
     }
 };
 
@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
             role: user.role
         };
 
-        // Simpan session dengan aman sebelum mengirim response ke frontend
+        // Wajib untuk Vercel Serverless: Simpan session secara aman sebelum merespon
         req.session.save((err) => {
             if (err) {
                 console.error('Gagal menyimpan session:', err);
@@ -55,17 +55,20 @@ exports.login = async (req, res) => {
             }
 
             // Tentukan tujuan redirect berdasarkan role
-            let redirectUrl = '/';
-            if (user.role === 'admin') redirectUrl = '/admin.html';
-            else if (user.role === 'developer') redirectUrl = '/dev.html';
+            let redirectUrl = '/index.html'; // Default ke dashboard utama
+            if (user.role === 'admin') {
+                redirectUrl = '/admin.html';
+            } else if (user.role === 'developer') {
+                redirectUrl = '/dev.html';
+            }
 
             // Kirim respon sukses beserta URL tujuannya ke frontend
-            res.json({ success: true, redirectUrl });
+            return res.json({ success: true, redirectUrl });
         });
 
     } catch (err) {
         console.error('Error login:', err);
-        res.status(500).json({ success: false, message: 'Gagal login: ' + err.message });
+        return res.status(500).json({ success: false, message: 'Gagal login: ' + err.message });
     }
 };
 

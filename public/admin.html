@@ -406,15 +406,27 @@
     document.getElementById('tanggalHari').textContent =
         `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
 
-    // ── User ──
+    // ── Proteksi Session & Ambil Data User ──
     fetch('/auth/me')
-        .then(r => r.json())
-        .then(d => {
-            document.getElementById('namaUser').textContent = d.nama;
-            document.getElementById('namaUserBanner').textContent = d.nama;
-            if (d.id) document.getElementById('linkDataSaya').href = `/detail_pegawai.html?id=${d.id}`;
+        .then(async r => {
+            if (!r.ok) {
+                // Jika belum login atau sesi habis, tendang kembali ke halaman login
+                window.location.href = '/auth/login';
+                return;
+            }
+            return r.json();
         })
-        .catch(() => {});
+        .then(d => {
+            if (d) {
+                document.getElementById('namaUser').textContent = d.nama;
+                document.getElementById('namaUserBanner').textContent = d.nama;
+                if (d.id) document.getElementById('linkDataSaya').href = `/detail_pegawai.html?id=${d.id}`;
+            }
+        })
+        .catch(err => {
+            console.error('Session error:', err);
+            window.location.href = '/auth/login';
+        });
 
     // ── Total Pegawai ──
     fetch('/pegawai')
