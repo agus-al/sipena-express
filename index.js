@@ -31,7 +31,7 @@ app.use(session({
   cookie: { 
     maxAge: 24 * 60 * 60 * 1000, // 1 hari
     secure: process.env.NODE_ENV === 'production', // True jika di Vercel (HTTPS)
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    sameSite: 'lax' // Diubah ke 'lax' agar cookie tersimpan dengan aman saat redirect di Vercel
   }
 }));
 
