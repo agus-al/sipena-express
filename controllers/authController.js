@@ -32,12 +32,12 @@ exports.login = async (req, res) => {
 
         const user = await User.findByNip(nip);
         if (!user) {
-            return res.status(401).json({ message: 'NIP tidak ditemukan!' });
+            return res.status(401).json({ success: false, message: 'NIP tidak ditemukan!' });
         }
 
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-            return res.status(401).json({ message: 'Password salah!' });
+            return res.status(401).json({ success: false, message: 'Password salah!' });
         }
 
         // Simpan session
@@ -47,22 +47,25 @@ exports.login = async (req, res) => {
             role: user.role
         };
 
-        // Simpan session dengan aman sebelum redirect di Vercel
+        // Simpan session dengan aman sebelum mengirim response ke frontend
         req.session.save((err) => {
             if (err) {
                 console.error('Gagal menyimpan session:', err);
-                return res.status(500).json({ message: 'Gagal memproses login session' });
+                return res.status(500).json({ success: false, message: 'Gagal memproses session' });
             }
 
-            // Redirect ke halaman dashboard yang sesuai (tanpa ekstensi .html jika dilayani static/route)
-            if (user.role === 'admin') return res.redirect('/admin.html');
-            if (user.role === 'developer') return res.redirect('/dev.html');
-            res.redirect('/'); // Mengarahkan ke halaman utama/dashboard umum
+            // Tentukan tujuan redirect berdasarkan role
+            let redirectUrl = '/';
+            if (user.role === 'admin') redirectUrl = '/admin.html';
+            else if (user.role === 'developer') redirectUrl = '/dev.html';
+
+            // Kirim respon sukses beserta URL tujuannya ke frontend
+            res.json({ success: true, redirectUrl });
         });
 
     } catch (err) {
         console.error('Error login:', err);
-        res.status(500).json({ message: 'Gagal login: ' + err.message });
+        res.status(500).json({ success: false, message: 'Gagal login: ' + err.message });
     }
 };
 

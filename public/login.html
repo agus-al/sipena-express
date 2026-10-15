@@ -161,16 +161,22 @@
       const nip = document.getElementById('nip').value;
       const password = document.getElementById('password').value;
 
-      const response = await fetch('/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nip, password })
-      });
+      try {
+        const response = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nip, password })
+        });
 
-      if (response.redirected) {
-        window.location.href = response.url;
-      } else {
         const data = await response.json();
+
+        if (response.ok && data.success) {
+          window.location.href = data.redirectUrl;
+        } else {
+          document.getElementById('errorMsg').classList.remove('d-none');
+        }
+      } catch (err) {
+        console.error('Error:', err);
         document.getElementById('errorMsg').classList.remove('d-none');
       }
     }
